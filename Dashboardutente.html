@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DEMO Dashboard Utente – Cura‑MI</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="topbar-content">
+      <img class="logo" src="Images/Logo_CURAMI.png" alt="Logo Cura‑MI">
+      <nav class="nav-links" id="navLinks">
+        <a href="./Home.html" class="nav-item"><i class="fa-solid fa-circle-user"></i>Home</a>
+        <a href="./Accedieregistrati.html" class="nav-item"><i class="fa-solid fa-circle-user"></i> Accedi</a>
+        <a href="./Accedieregistrati.html" class="nav-item"><i class="fa-solid fa-user-plus"></i> Registrati</a>
+        <a href="#" class="nav-item"><i class="fa-solid fa-circle-info"></i> Chi siamo</a>
+        <a href="./inostriservizi.html" class="nav-item"><i class="fa-solid fa-list"></i> DEMO - I nostri Servizi</a>
+      </nav>
+      <div id="search" class="topbar-section">
+        <input id="search-box" class="box-search" type="text" placeholder="Servizi">
+      </div>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="navbar-yellow">
+      <h1 class="h1">
+        "Prenoti in pochi passi, con chiarezza sui tempi e sul costo"
+      </h1>
+    </div>
+  </header>
+
+  <!-- DASHBOARD -->
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">DEMO Cura‑MI</div>
+      <nav class="sidebar-nav">
+        <a href="./profilo-prenotazioni-pagamenti.html" class="nav-link active"><i class="fa-solid fa-user"></i> Profilo</a>
+        <a href="./profilo-prenotazioni-pagamenti.html" class="nav-link"><i class="fa-solid fa-calendar-check"></i> Le mie prenotazioni</a>
+        <a href="./inostriservizi.html" class="nav-link"><i class="fa-solid fa-list"></i> Servizi</a>
+        <a href="#" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Esci</a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h1>Benvenuto, [Nome Utente]</h1>
+
+      <div class="cards-row">
+        <div class="card">
+          <h3>Prossima prenotazione</h3>
+          <p>Infermiere — 25 Agosto, 10:00</p>
+        </div>
+        <div class="card">
+          <h3>Prenotazioni this mese</h3>
+          <p>3 Prenotazioni effettuate</p>
+        </div>
+        <div class="card">
+          <h3>Account</h3>
+          <p>Email: utente@mail.com</p>
+        </div>
+      </div>
+
+      <section class="appointments">
+        <h2>Le tue prenotazioni</h2>
+        <table>
+          <thead>
+            <tr><th>Data</th><th>Servizio</th><th>Operatore</th><th>Stato</th><th>Azione</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>05/08/2025</td><td>Fisioterapista</td><td>Dr. Rossi</td><td>Confermato</td><td><button>Dettagli</button></td></tr>
+            <tr><td>15/08/2025</td><td>OSS</td><td>Sig. Bianchi</td><td>In attesa</td><td><button>Cancella</button></td></tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('active');
+    });
+  </script>
+
+</body>
+</html>
