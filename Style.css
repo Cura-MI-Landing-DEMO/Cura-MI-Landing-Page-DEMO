@@ -1165,3 +1165,67 @@ body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: 
   .navbar-yellow { flex-direction: column; align-items: center; gap: 10px; }
   .h1 { font-size: 16px; margin-bottom: 8px; }
 }
+
+/* ====== PATCH: Quick Action (lente "Servizi") ====== */
+#search{ display:none !important; } /* nasconde l’old search se presente */
+.quick-action{
+  display:inline-flex; align-items:center; gap:8px;
+  height:36px; padding:0 12px; border-radius:10px;
+  color:#139395; text-decoration:none;
+  background:rgba(255,255,255,0.55);
+  border:1px solid rgba(19,147,149,0.35);
+  box-shadow:0 2px 10px rgba(0,0,0,0.06);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  transition:transform .15s ease, box-shadow .2s ease;
+}
+.quick-action:hover{ transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.10); }
+.quick-action i{ font-size:16px; }
+.quick-action .qa-label{ font-weight:700; font-size:14px; }
+
+/* ====== PATCH: Hamburger animato (non cambia layout desktop) ====== */
+.hamburger{ padding:6px 8px; border-radius:8px; }
+.hamburger span{ transition:transform .25s, opacity .25s; }
+.hamburger.active span:nth-child(1){ transform:translateY(8px) rotate(45deg); }
+.hamburger.active span:nth-child(2){ opacity:0; }
+.hamburger.active span:nth-child(3){ transform:translateY(-8px) rotate(-45deg); }
+
+/* ====== PATCH: Menu mobile super‑vetrato + backdrop ====== */
+@media (max-width: 900px){
+  .quick-action .qa-label{ display:none; }           /* solo icona su mobile */
+  .quick-action{ height:38px; padding:0 10px; }
+
+  /* non tocco i tuoi stili esistenti, aggiungo solo fixed + vetro */
+  .nav-links{
+    position: fixed; left:0; right:0;
+    top: var(--header-h, 60px);
+    background: rgba(255,255,255,0.88);
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    padding: 14px 16px 18px;
+    z-index: 1100;
+  }
+}
+
+.nav-backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,0.35);
+  opacity:0; transition:opacity .25s ease; z-index:1005;
+}
+.nav-backdrop.show{ opacity:1; }
+.nav-backdrop[hidden]{ display:none; }
+
+/* ====== PATCH: header fixed spacer (non tocco i tuoi) ====== */
+.header.header--fixed{ position:fixed; top:0; left:0; right:0; z-index:1000; }
+#header-spacer{ height:0; } /* height via JS */
+
+/* ——— Fix hamburger sopra al pannello ——— */
+.hamburger{
+  position: relative;
+  z-index: 1202;          /* sopra nav-links (1100) e backdrop (1005) */
+}
+
+/* (facoltativo) quando il menu è aperto, impedisce lo scroll sotto */
+body.nav-open{
+  overflow: hidden;
+}
+
