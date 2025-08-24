@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cura‑MI · Home</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- HEADER con Logo, Menu Hamburger e Search a destra -->
+  <!-- HEADER -->
+<header class="header header--fixed" id="siteHeader">
+
+  <div class="topbar-content">
+    <img class="logo" src="/images/logocurami.png" alt="Logo Cura‑MI">
+
+    <!-- nav centrata -->
+    <nav class="nav-links" id="navLinks" aria-label="Navigazione principale">
+      <a href="accedieregistrati.html" class="nav-item"><i class="fa-solid fa-circle-user"></i> Accedi</a>
+      <a href="accedieregistrati.html" class="nav-item"><i class="fa-solid fa-user-plus"></i> Registrati</a>
+      <a href="#" class="nav-item"><i class="fa-solid fa-circle-info"></i> Chi siamo</a>
+      <a href="inostriservizi.html" class="nav-item"><i class="fa-solid fa-pump-medical"></i>I nostri Servizi</a>
+      <a href="dashboardutente.html" class="nav-item"><i class="fa-solid fa-chart-line"></i>DEMO Dashboard Utente</a>
+      <a href="operatordashboard.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> DEMO Dashboard operatore</a>
+    </nav>
+
+    <!-- AL POSTO DEL VECCHIO SEARCH -->
+<a class="quick-action" href="inostriservizi.html" aria-label="Vai ai Servizi">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <span class="qa-label">Servizi</span>
+</a>
+<!-- FINE SOSTITUZIONE -->
+
+    <!-- hamburger -->
+    <button class="hamburger" id="hamburger" aria-label="Apri/chiudi menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- banner giallo -->
+  <div class="navbar-yellow">
+    <h1 class="h1">"Prenoti in pochi passi, con chiarezza sui tempi e sul costo" WORK IN PROGRESS…</h1>
+    <div id="studi-disponibili">
+      <a href="./studioshtml.html">Studi disponibili <i class="fa-solid fa-map-location-dot"></i></a>
+    </div>
+  </div>
+</header>
+
+<div id="header-spacer" aria-hidden="true"></div>
+
+  <!-- Sezione bianca con bottoni -->
+  <div id="menu-bar-2-container">
+    <div id="menu-bar-2">
+      <span class="frase-form">“Aiutaci a capire come possiamo esserti utili” – info@cura‑mi.it</span><br>
+      <button class="button1">
+        <a href="https://forms.gle/sVC9DzyVGq6T4FP9A">
+          <i class="fa-brands fa-google img-form"></i><span class="text-button">Form Utenti</span>
+        </a>
+      </button>
+      <button class="button2">
+        <a href="#"><i class="fa-brands fa-google img-form"></i><span class="text-button">Form Operatori</span></a>
+      </button>
+    </div>
+  </div>
+
+  <!-- Missione -->
+  <div id="page-container">
+    <div id="chisiamo">
+      <div class="missione-content">
+        <div class="missione-testo">
+          <h2 class="h2">La nostra missione</h2>
+          <p class="p">
+            Cura‑MI nasce con un'idea semplice: rendere l'assistenza domiciliare più vicina, accessibile e trasparente. 
+            Crediamo che ogni persona meriti cure di qualità, con rispetto e dignità. <br><br>
+            <span class="span-text">Il nostro impegno è:</span><br><br>
+            <i class="fa-solid fa-thumbs-up spunte-punti"></i><span class="span-punti"> Facilitare l’incontro</span> tra chi ha bisogno e chi è pronto ad aiutare<br><br>
+            <i class="fa-solid fa-thumbs-up spunte-punti"></i><span class="span-punti"> Garantire chiarezza</span> nei tempi e nei costi, senza sorprese<br><br>
+            <i class="fa-solid fa-thumbs-up spunte-punti"></i><span class="span-punti"> Valorizzare gli operatori</span> della comunità<br><br>
+            <i class="fa-solid fa-thumbs-up spunte-punti"></i><span class="span-punti"> Restituire serenità</span> alle <span class="span-text">famiglie</span><br><br>
+            <span class="span-text">Per noi</span> la tecnologia è solo uno strumento: al centro ci sono <span class="span-text">persone, famiglie e comunità</span>
+          </p>
+        </div>
+        <div class="missione-immagine">
+          <img src="/images/locandinacurami.png" alt="Assistenza domiciliare" class="img-missione-preview">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card vetro -->
+  <div class="glass-card">
+    <h3 class="glass-title">“Aiutaci a capire come possiamo esserti utili” – info@cura‑mi.it</h3>
+    <div class="buttons-container">
+      <button class="button1">
+        <a href="https://forms.gle/sVC9DzyVGq6T4FP9A"><i class="fa-brands fa-google img-form"></i><span>Form Utenti</span></a>
+      </button>
+      <button class="button2">
+        <a href="#"><i class="fa-brands fa-google img-form"></i><span>Form Operatori</span></a>
+      </button>
+    </div>
+  </div>
+
+<!-- CALL & WHATSAPP -->
+<div class="contact-icons">
+  <a href="tel:+393331234567" class="icon-btn call" aria-label="Chiama">
+    <i class="fa-solid fa-phone"></i>
+  </a>
+  <a href="https://wa.me/393331234567" target="_blank" class="icon-btn whatsapp" aria-label="WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer glass-footer" role="contentinfo">
+  <div class="footer-content">
+    <!-- Colonna sinistra -->
+    <div class="footer-left">
+      <a href="#">© 2025 Cura-MI</a>
+    </div>
+
+    <!-- Colonna centrale -->
+    <div class="footer-center">
+      <p class="demo-text">
+       ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+  <strong>Cura-mi</strong> è in fase di costruzione, ma puoi già dirci la tua <br>
+  Rilascio previsto: <strong>2026</strong>.
+      </p>
+    </div>
+
+    <!-- Colonna destra -->
+    <div class="footer-right">
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<!-- BANNER DEMO (ripetizione ogni 3 minuti) -->
+<div id="demoBanner" class="demo-banner" role="status" aria-live="polite" aria-hidden="true">
+  <button class="demo-close" id="demoClose" aria-label="Chiudi avviso">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+  <strong>Cura-mi</strong> è in fase di costruzione, ma puoi già dirci la tua <br>
+  Rilascio previsto: <strong>2026</strong>.
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+  const header    = document.getElementById('siteHeader');
+  const spacer    = document.getElementById('header-spacer');
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+  const backdrop  = document.getElementById('navBackdrop');
+
+  /* Spacer per header fixed + variabile CSS per top del menu */
+  const setSpacer = () => {
+    if (!header || !spacer) return;
+    const h = header.offsetHeight;
+    document.documentElement.style.setProperty('--header-h', h + 'px');
+    spacer.style.height = h + 'px';
+  };
+  setSpacer();
+  window.addEventListener('resize', setSpacer);
+  setTimeout(setSpacer, 200);
+
+  const closeMenu = () => {
+    if (!navLinks || !hamburger) return;
+    navLinks.classList.remove('active');
+    hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+    if (backdrop) { backdrop.hidden = true; backdrop.classList.remove('show'); }
+  };
+
+  const toggleMenu = () => {
+    if (!navLinks || !hamburger) return;
+    const isOpen = navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('nav-open', isOpen);
+    if (backdrop) {
+      backdrop.hidden = !isOpen;
+      requestAnimationFrame(() => backdrop.classList.toggle('show', isOpen));
+    }
+  };
+
+  if (hamburger && navLinks) {
+    // Apri/chiudi
+    hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+    // Chiudi quando clicchi un link del menu
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    // Chiudi clic fuori
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) closeMenu();
+    });
+    // Chiudi cliccando il backdrop
+    backdrop && backdrop.addEventListener('click', closeMenu);
+    // Chiudi con ESC
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+    // Chiudi tornando a desktop
+    window.addEventListener('resize', () => { if (window.innerWidth > 900) closeMenu(); });
+  }
+
+
+    /* ====== BANNER DEMO OGNI 3 MINUTI ====== */
+    const banner = document.getElementById('demoBanner');
+    const bannerClose = document.getElementById('demoClose');
+    let bannerTimer = null;
+    let isVisible = false;
+
+    const showBanner = () => {
+      if (isVisible) return;        // evita doppioni
+      banner.classList.add('show');
+      banner.setAttribute('aria-hidden', 'false');
+      isVisible = true;
+    };
+
+    const hideBanner = () => {
+      banner.classList.remove('show');
+      banner.setAttribute('aria-hidden', 'true');
+      isVisible = false;
+    };
+
+    // Mostra subito all'avvio
+    showBanner();
+
+    // Chiudi al click sulla X
+    bannerClose.addEventListener('click', hideBanner);
+
+    // Ogni 3 minuti ripresenta (180000 ms)
+    bannerTimer = setInterval(() => {
+      showBanner();
+    }, 180000);
+  });
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const header  = document.getElementById('siteHeader');
+    const spacer  = document.getElementById('header-spacer');
+
+    function setSpacerHeight(){
+      if(!header || !spacer) return;
+      spacer.style.height = header.offsetHeight + 'px';
+    }
+
+    setSpacerHeight();
+    window.addEventListener('resize', setSpacerHeight);
+
+    /* opzionale: se i font web cambiano altezza dopo il load */
+    setTimeout(setSpacerHeight, 200);
+  });
+</script>
+
+</body>
+</html>
