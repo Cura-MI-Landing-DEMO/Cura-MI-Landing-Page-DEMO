@@ -29,7 +29,7 @@ body{ font-family:Arial,Helvetica,sans-serif; color:var(--slate); background:var
 .navbar-yellow{
   background:var(--gold); padding:10px 20px; display:flex; align-items:center; justify-content:center;
 }
-.h1{ color:#fff; font-size:18px; font-family:cursive; text-align:center; }
+.h1{ color:#fff; font-size:18px;  text-align:center; }
 
 /* Layout container */
 .container{ max-width:1200px; margin:24px auto; padding:0 16px; }
@@ -163,7 +163,7 @@ body{ font-family:Arial,Helvetica,sans-serif; color:var(--slate); background:var
   background:#d7ae46; padding:10px 20px;
   display:flex; align-items:center; justify-content:center;
 }
-.h1{ color:#fff; font-size:18px; font-family:cursive; text-align:center; }
+.h1{ color:#fff; font-size:18px;  text-align:center; }
 
 /* MOBILE: hamburger visibile, nav a tendina centrata; search resta a destra (sotto o a fianco in base allo spazio) */
 @media (max-width: 800px){
@@ -201,4 +201,35 @@ body{ font-family:Arial,Helvetica,sans-serif; color:var(--slate); background:var
   }
   .box-search{ width:auto; max-width:70%; }
 }
+
+
+/* Search rimessa a destra */
+#search {
+  display: flex; align-items: center;
+}
+.box-search {
+  background: #139395; 
+  border: none; 
+  color: white;
+  font-weight: bold; 
+  font-size: 14px;
+  padding: 5px 10px; 
+  border-radius: 10px;
+}
+
+/* ====== PATCH: Quick Action (lente "Servizi") ====== */
+#search{ display:none !important; } /* nasconde l’old search se presente */
+.quick-action{
+  display:inline-flex; align-items:center; gap:8px;
+  height:36px; padding:0 12px; border-radius:10px;
+  color:#139395; text-decoration:none;
+  background:rgba(255,255,255,0.55);
+  border:1px solid rgba(19,147,149,0.35);
+  box-shadow:0 2px 10px rgba(0,0,0,0.06);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  transition:transform .15s ease, box-shadow .2s ease;
+}
+.quick-action:hover{ transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.10); }
+.quick-action i{ font-size:16px; }
+.quick-action .qa-label{ font-weight:700; font-size:14px; }
 
