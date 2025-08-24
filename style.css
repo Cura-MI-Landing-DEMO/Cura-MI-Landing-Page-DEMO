@@ -1491,7 +1491,7 @@ html, body {
 @media (max-width: 768px) {
   /* DEMO Cura-MI (sidebar logo su mobile) */
   .sidebar-logo {
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 700;
     color: #139395;
     margin-bottom: 14px;
