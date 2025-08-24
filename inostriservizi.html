@@ -152,69 +152,109 @@
     Rilascio previsto: <strong>2026</strong>.
   </div>
 
-  <!-- SCRIPT -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      /* ===== Header spacer ===== */
-      const header  = document.getElementById('siteHeader');
-      const spacer  = document.getElementById('header-spacer');
-      const setSpacer = () => { if (header && spacer) spacer.style.height = header.offsetHeight + 'px'; };
-      setSpacer();
-      window.addEventListener('resize', setSpacer);
-      setTimeout(setSpacer, 200);
-
-      /* ===== Hamburger & backdrop ===== */
-      const hamburger = document.getElementById('hamburger');
-      const navLinks  = document.getElementById('navLinks');
-      const backdrop  = document.getElementById('navBackdrop');
-
-      const closeMenu = () => {
-        navLinks?.classList.remove('active');
-        hamburger?.classList.remove('active');
-        hamburger?.setAttribute('aria-expanded', 'false');
-        if (backdrop) { backdrop.hidden = true; backdrop.classList.remove('show'); }
-      };
-      const toggleMenu = () => {
-        const isOpen = navLinks.classList.toggle('active');
-        hamburger.classList.toggle('active', isOpen);
-        hamburger.setAttribute('aria-expanded', String(isOpen));
-        if (backdrop) {
-          backdrop.hidden = !isOpen;
-          requestAnimationFrame(() => backdrop.classList.toggle('show', isOpen));
-        }
-      };
-
-      hamburger?.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
-      navLinks?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    const header    = document.getElementById('siteHeader');
+    const spacer    = document.getElementById('header-spacer');
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+    const backdrop  = document.getElementById('navBackdrop');
+  
+    /* Spacer per header fixed + variabile CSS per top del menu */
+    const setSpacer = () => {
+      if (!header || !spacer) return;
+      const h = header.offsetHeight;
+      document.documentElement.style.setProperty('--header-h', h + 'px');
+      spacer.style.height = h + 'px';
+    };
+    setSpacer();
+    window.addEventListener('resize', setSpacer);
+    setTimeout(setSpacer, 200);
+  
+    const closeMenu = () => {
+      if (!navLinks || !hamburger) return;
+      navLinks.classList.remove('active');
+      hamburger.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('nav-open');
+      if (backdrop) { backdrop.hidden = true; backdrop.classList.remove('show'); }
+    };
+  
+    const toggleMenu = () => {
+      if (!navLinks || !hamburger) return;
+      const isOpen = navLinks.classList.toggle('active');
+      hamburger.classList.toggle('active', isOpen);
+      hamburger.setAttribute('aria-expanded', String(isOpen));
+      document.body.classList.toggle('nav-open', isOpen);
+      if (backdrop) {
+        backdrop.hidden = !isOpen;
+        requestAnimationFrame(() => backdrop.classList.toggle('show', isOpen));
+      }
+    };
+  
+    if (hamburger && navLinks) {
+      // Apri/chiudi
+      hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+      // Chiudi quando clicchi un link del menu
+      navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+      // Chiudi clic fuori
       document.addEventListener('click', (e) => {
         if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) closeMenu();
       });
+      // Chiudi cliccando il backdrop
+      backdrop && backdrop.addEventListener('click', closeMenu);
+      // Chiudi con ESC
       document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
-      window.addEventListener('resize', () => { if (window.innerWidth > 800) closeMenu(); });
-
-      /* ===== Demo banner ogni 3 minuti ===== */
+      // Chiudi tornando a desktop
+      window.addEventListener('resize', () => { if (window.innerWidth > 900) closeMenu(); });
+    }
+  
+  
+      /* ====== BANNER DEMO OGNI 3 MINUTI ====== */
       const banner = document.getElementById('demoBanner');
       const bannerClose = document.getElementById('demoClose');
+      let bannerTimer = null;
       let isVisible = false;
-
+  
       const showBanner = () => {
-        if (isVisible) return;
+        if (isVisible) return;        // evita doppioni
         banner.classList.add('show');
         banner.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('banner-visible'); // aggiunge padding-bottom in CSS per non coprire le card
         isVisible = true;
       };
+  
       const hideBanner = () => {
         banner.classList.remove('show');
         banner.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('banner-visible');
         isVisible = false;
       };
-
-      // Mostra subito e poi ogni 3 minuti
+  
+      // Mostra subito all'avvio
       showBanner();
+  
+      // Chiudi al click sulla X
       bannerClose.addEventListener('click', hideBanner);
-      setInterval(showBanner, 180000);
+  
+      // Ogni 3 minuti ripresenta (180000 ms)
+      bannerTimer = setInterval(() => {
+        showBanner();
+      }, 180000);
+    });
+  
+      document.addEventListener('DOMContentLoaded', () => {
+      const header  = document.getElementById('siteHeader');
+      const spacer  = document.getElementById('header-spacer');
+  
+      function setSpacerHeight(){
+        if(!header || !spacer) return;
+        spacer.style.height = header.offsetHeight + 'px';
+      }
+  
+      setSpacerHeight();
+      window.addEventListener('resize', setSpacerHeight);
+  
+      /* opzionale: se i font web cambiano altezza dopo il load */
+      setTimeout(setSpacerHeight, 200);
     });
   </script>
 </body>

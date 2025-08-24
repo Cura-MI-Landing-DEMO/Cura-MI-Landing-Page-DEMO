@@ -26,7 +26,8 @@ html, body {
 
 /* Search rimessa a destra */
 #search {
-  display: flex; align-items: center;
+  display: flex; align-items: center;  
+  
 }
 .box-search {
   background: #139395; 
@@ -36,20 +37,35 @@ html, body {
   font-size: 14px;
   padding: 5px 10px; 
   border-radius: 10px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  #search {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 12px;
+  }
 }
 
 /* Navbar gialla e “Studi disponibili” */
 .navbar-yellow {
-  background: #d7ae46; 
-  padding: 10px 20px;
+  background: #FDC043; 
+  padding: 60px 60px;
   display: flex; 
   align-items: center;
   justify-content: space-between; 
   flex-wrap: wrap;
+  margin-top: 16px;
+  border-radius: 8px;           /* (opzionale) bordi stondati */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* (opzionale) leggero effetto rilievo */
+  min-height: 80px;          /* altezza minima garantita */
+  
 }
 .h1 {
   color: white; 
-  font-size: 20px; 
+  font-size: 40px; 
   flex: 1; 
   text-align: center; 
   margin-bottom: 8px;
@@ -84,7 +100,7 @@ html, body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   max-width: 700px; width: 90%;
 }
-.frase-form { color: #d7ae46; font-size: 14px; margin-bottom: 15px; }
+.frase-form { color: #FDC043; font-size: 14px; margin-bottom: 15px; }
 
 /* Bottoni */
 .button1, .button2 {
@@ -93,7 +109,7 @@ html, body {
   border: none; border-radius: 6px; margin: 10px; cursor: pointer;
 }
 .button1 { background: #139395; color: white; }
-.button2 { background: #d7ae46; color: #139395; }
+.button2 { background: #FDC043; color: #139395; }
 .button1 a, .button2 a {
   display: flex; align-items: center; gap: 6px;
   color: inherit; text-decoration: none;
@@ -102,18 +118,18 @@ html, body {
 
 /* MISSIONE */
 #page-container {
-  max-width: 1100px; margin: auto; padding: 40px 20px;
+  max-width: 1100px; margin: auto; padding: 40px 20px; ;
 }
 .missione-content {
-  display: flex; align-items: flex-start; gap: 40px; flex-wrap: wrap;
+  display: flex; align-items: flex-start; gap: 40px; flex-wrap: wrap ;
 }
 .missione-testo { flex: 1; min-width: 300px; }
 .h2 {
-  color: #d7ae46; font-size: 24px; font-weight: bold;
-  border-bottom: 2px solid #139395; width: fit-content; margin-bottom: 30px;
+  color: #FDC043; font-size: 24px; font-weight: bold;text-align: left;
+  border-bottom: 2px solid #139395; width: fit-content; margin-bottom: 30px; padding-top: -30px;
 }
-.p { line-height: 1.6; font-size: 16px; }
-.span-text { color: #d7ae46; font-weight: bold; }
+.p { line-height: 1.6; font-size: 16px;text-align: left; }
+.span-text { color: #FDC043; font-weight: bold; }
 .span-punti { color: #139395; font-weight: bold; }
 .spunte-punti { color: #394e65; padding-right: 10px; }
 .missione-immagine { max-width: 320px; width: 100%; }
@@ -130,7 +146,7 @@ html, body {
   box-shadow: 0 8px 40px rgba(0,0,0,0.2);
 }
 .glass-title {
-  color: #d7ae46; font-size: 20px; font-weight: bold;
+  color: #FDC043; font-size: 20px; font-weight: bold;
   margin-bottom: 25px;
 }
 .buttons-container {
@@ -140,11 +156,22 @@ html, body {
 /* RESPONSIVE HAMBURGER & LAYOUT */
 @media (max-width: 800px) {
   .nav-links {
-    display: none; flex-direction: column; background: white;
-    position: absolute; top: 60px; left: 0; right: 0;
-    gap: 10px; padding: 10px 0; z-index: 1000;
+    display: none;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.85); /* vetro bianco trasparente */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 16px 0;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1100;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   }
-  .nav-links.active { display: flex; }
+  .nav-links.active { display: flex;   background: #FDC043 /* cambia colore quando aperta */
+    }
   .hamburger { display: flex; }
   .navbar-yellow { flex-direction: column; align-items: center; gap: 10px; }
   .h1 { font-size: 16px; margin-bottom: 8px; }
@@ -182,7 +209,7 @@ body { font-family: 'Times New Roman', Times, serif; background: #f8f9fa; color:
 
 /* NAVBAR YELLOW & STUDI AVAILABLE */
 .navbar-yellow {
-  background: #d7ae46; padding: 10px 20px;
+  background: #FDC043; padding: 10px 20px;
   display: flex; align-items: center; justify-content: space-between;
   flex-wrap: wrap;
 }
@@ -259,7 +286,7 @@ body { font-family: 'Times New Roman', Times, serif; background: #f8f9fa; color:
 }
 .marker {
   position: absolute;
-  background: #d7ae46;
+  background: #FDC043;
   color: white;
   padding: 4px 8px;
   border-radius: 4px;
@@ -321,13 +348,13 @@ body { font-family: 'Times New Roman', Times, serif; background: #f8f9fa; color:
 }
 
 .services-section {
-  padding: 60px 20px;
+  padding: 60px 60px;
   text-align: center;
 }
 
 .section-title {
   font-size: 28px;
-  color: #d7ae46;
+  color: #FDC043;
   margin-bottom: 40px;
 }
 
@@ -336,10 +363,11 @@ body { font-family: 'Times New Roman', Times, serif; background: #f8f9fa; color:
   gap: 30px;
   flex-wrap: wrap;
   justify-content: center;
+  padding-left: 42px;
 }
 
 .service-card {
-  width: 280px;
+  width: 300px;
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(15px);
   border: 1px solid rgba(255, 255, 255, 0.4);
@@ -466,7 +494,7 @@ body {
 .sidebar-nav .nav-link.active,
 .sidebar-nav .nav-link:hover {
   background: rgba(255,255,255,0.4);
-  color: #d7ae46;
+  color: #FDC043;
 }
 .main-content {
   flex: 1;
@@ -492,7 +520,7 @@ body {
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 .card h3 {
-  color: #d7ae46;
+  color: #FDC043;
   margin-bottom: 10px;
 }
 .appointments h2 {
@@ -509,7 +537,7 @@ body {
   text-align: left;
 }
 .appointments th {
-  background: #d7ae46;
+  background: #FDC043;
   color: white;
 }
 .appointments tr:nth-child(even) {
@@ -610,7 +638,7 @@ body {
 
 /* BANNER */
 .navbar-yellow {
-  background-color: #d7ae46;
+  background-color: #FDC043;
   color: white;
   text-align: center;
   padding: 12px 0;
@@ -656,7 +684,7 @@ body {
 .sidebar-nav .nav-link:hover,
 .sidebar-nav .nav-link.active {
   background: rgba(255,255,255,0.4);
-  color: #d7ae46;
+  color: #FDC043;
 }
 
 /* MAIN CONTENT */
@@ -734,7 +762,7 @@ body {
 }
 
 .appointments th {
-  background-color: #d7ae46;
+  background-color: #FDC043;
   color: white;
 }
 
@@ -1014,7 +1042,7 @@ body {
 * { margin: 0; padding: 0; box-sizing: border-box; }
 :root{
   --teal:#139395;
-  --gold:#d7ae46;
+  --gold:#FDC043;
   --slate:#394e65;
   --bg:#f8f9fa;
 
@@ -1083,8 +1111,8 @@ body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: 
 
 /* Backdrop behind mobile menu */
 .nav-backdrop{
-  position: fixed; inset: 0; background: rgba(0,0,0,.35);
-  opacity: 0; transition: opacity .25s ease; z-index: 1005;
+  position: fixed; inset: 0; background: transparent !important;
+  opacity: 0; transition: opacity .25s ease; z-index: 1005;   display: none !important;
 }
 .nav-backdrop.show{ opacity: 1; }
 .nav-backdrop[hidden]{ display:none; }
@@ -1263,12 +1291,7 @@ body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: 
   }
 }
 
-.nav-backdrop{
-  position:fixed; inset:0; background:rgba(0,0,0,0.35);
-  opacity:0; transition:opacity .25s ease; z-index:1005;
-}
-.nav-backdrop.show{ opacity:1; }
-.nav-backdrop[hidden]{ display:none; }
+
 
 /* ====== PATCH: header fixed spacer (non tocco i tuoi) ====== */
 .header.header--fixed{ position:fixed; top:0; left:0; right:0; z-index:1000; }
