@@ -48,20 +48,29 @@ html, body {
     margin-top: 12px;
   }
 }
-
-/* Navbar gialla e “Studi disponibili” */
 .navbar-yellow {
-  background: #FDC043; 
-  padding: 60px 60px;
-  display: flex; 
+  background: #FDC043;
+  color: white;
+  text-align: center;
+  padding: 30px 20px; /* Dimensione verticale visibile ma non eccessiva */
+  display: flex;
   align-items: center;
-  justify-content: space-between; 
+  justify-content: space-between;
   flex-wrap: wrap;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  min-height: 80px;
+  gap: 10px;
   margin-top: 16px;
-  border-radius: 8px;           /* (opzionale) bordi stondati */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* (opzionale) leggero effetto rilievo */
-  min-height: 80px;          /* altezza minima garantita */
-  
+}
+
+/* Per smartphone: allinea al centro e riduci spazi */
+@media (max-width: 768px) {
+  .navbar-yellow {
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px 10px;
+  }
 }
 .h1 {
   color: white; 
@@ -153,33 +162,16 @@ html, body {
   display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
 }
 
+
 /* RESPONSIVE HAMBURGER & LAYOUT */
-@media (max-width: 800px) {
-  .nav-links {
-    display: none;
-  position: absolute;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.85); /* vetro bianco trasparente */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 16px 0;
-  flex-direction: column;
-  align-items: center;
-  z-index: 1100;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  }
-  .nav-links.active { display: flex;   background: #FDC043 /* cambia colore quando aperta */
-    }
-  .hamburger { display: flex; }
-  .navbar-yellow { flex-direction: column; align-items: center; gap: 10px; }
+
+ 
   .h1 { font-size: 16px; margin-bottom: 8px; }
   .missione-content {
     flex-direction: column; align-items: center; text-align: center;
   }
   .glass-card { padding: 30px 20px; }
-}
+
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Times New Roman', Times, serif; background: #f8f9fa; color: #394e65; }
@@ -208,11 +200,7 @@ body { font-family: 'Times New Roman', Times, serif; background: #f8f9fa; color:
 }
 
 /* NAVBAR YELLOW & STUDI AVAILABLE */
-.navbar-yellow {
-  background: #FDC043; padding: 10px 20px;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap;
-}
+
 .h1 {
   color: white; font-size: 20px; 
   flex: 1; text-align: center; margin-bottom: 8px;
@@ -637,12 +625,7 @@ body {
 }
 
 /* BANNER */
-.navbar-yellow {
-  background-color: #FDC043;
-  color: white;
-  text-align: center;
-  padding: 12px 0;
-}
+
 
 .navbar-yellow h1 {
   font-size: 18px;
@@ -1075,11 +1058,7 @@ body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: 
   padding: 6px 12px; border-radius: 10px;
 }
 
-/* Navbar gialla */
-.navbar-yellow {
-  background: var(--gold); padding: 10px 20px;
-  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
-}
+
 .h1 { color: white; font-size: 20px; font-family: cursive; flex: 1; text-align: center; margin-bottom: 8px; }
 #studi-disponibili { background: white; border: 1px solid var(--teal); padding: 5px 10px; border-radius: 5px; }
 #studi-disponibili a { color: var(--teal); text-decoration: none; font-size: 16px; }
@@ -1245,10 +1224,13 @@ body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: 
 /* =========================================================
    Responsive tweaks
    ========================================================= */
-@media (max-width: 800px){
-  .navbar-yellow { flex-direction: column; align-items: center; gap: 10px; }
-  .h1 { font-size: 16px; margin-bottom: 8px; }
-}
+   @media (max-width: 768px) {
+    .navbar-yellow {
+      flex-direction: column;
+      justify-content: center;
+      padding: 20px 10px;
+    }
+  }
 
 /* ====== PATCH: Quick Action (lente "Servizi") ====== */
 #search{ display:none !important; } /* nasconde l’old search se presente */
@@ -1390,7 +1372,7 @@ html, body {
 }
 
 .card h3 {
-  color: #d7ae46;
+  color: #FDC043;
   margin-bottom: 10px;
 }
 
@@ -1544,3 +1526,29 @@ html, body {
     margin-top: 10px;
   }
 }
+
+
+@media (max-width: 800px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    background: rgba(253, 192, 67, 0.95); /* giallo vetrato */
+    backdrop-filter: blur(10px);
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    z-index: 1;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+    position: relative;
+    z-index: 2;
+  }
+}
+

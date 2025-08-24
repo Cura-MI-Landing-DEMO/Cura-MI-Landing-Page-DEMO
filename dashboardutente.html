@@ -16,22 +16,14 @@
   <div class="topbar-content">
     <img class="logo" src="images/logocurami.png" alt="Logo Cura‑MI">
 
-    <!-- nav centrata -->
-    <nav class="nav-links" id="navLinks" aria-label="Navigazione principale">
-      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i>Home</a>
-      <a href="accedieregistrati.html" class="nav-item"><i class="fa-solid fa-circle-user"></i> Accedi</a>
-      <a href="accedieregistrati.html" class="nav-item"><i class="fa-solid fa-user-plus"></i> Registrati</a>
-      <a href="#" class="nav-item"><i class="fa-solid fa-circle-info"></i> Chi siamo</a>
-      <a href="dashboardutente.html" class="nav-item"><i class="fa-solid fa-chart-line"></i>DEMO Dashboard Utente</a>
-      <a href="operatordashboard.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> DEMO Dashboard operatore</a>
-    </nav>
+   
 
-    <!-- AL POSTO DEL VECCHIO SEARCH -->
+    <!-- SEARCH -->
 <a class="quick-action" href="inostriservizi.html" aria-label="Vai ai Servizi">
   <i class="fa-solid fa-magnifying-glass"></i>
   <span class="qa-label">Servizi</span>
 </a>
-<!-- FINE SOSTITUZIONE -->
+
 
     <!-- hamburger -->
     <button class="hamburger" id="hamburger" aria-label="Apri/chiudi menu" aria-expanded="false" aria-controls="navLinks">
@@ -46,6 +38,16 @@
       <a href="./studioshtml.html">Studi disponibili <i class="fa-solid fa-map-location-dot"></i></a>
     </div>
   </div>
+
+   <!-- nav centrata -->
+   <nav class="nav-links" id="navLinks" aria-label="Navigazione principale">
+    <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i>Home</a>
+    <a href="accedieregistrati.html" class="nav-item"><i class="fa-solid fa-circle-user"></i> Accedi</a>
+    <a href="accedieregistrati.html" class="nav-item"><i class="fa-solid fa-user-plus"></i> Registrati</a>
+    <a href="#" class="nav-item"><i class="fa-solid fa-circle-info"></i> Chi siamo</a>
+    <a href="dashboardutente.html" class="nav-item"><i class="fa-solid fa-chart-line"></i>DEMO Dashboard Utente</a>
+    <a href="operatordashboard.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> DEMO Dashboard operatore</a>
+  </nav>
 </header>
 
   <!-- DASHBOARD -->
@@ -158,68 +160,109 @@
 
   <!-- SCRIPT -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      /* ===== Header spacer ===== */
-      const header  = document.getElementById('siteHeader');
-      const spacer  = document.getElementById('header-spacer');
-      const setSpacer = () => { if (header && spacer) spacer.style.height = header.offsetHeight + 'px'; };
-      setSpacer();
-      window.addEventListener('resize', setSpacer);
-      setTimeout(setSpacer, 200);
+  document.addEventListener('DOMContentLoaded', () => {
+  const header    = document.getElementById('siteHeader');
+  const spacer    = document.getElementById('header-spacer');
+  const hamburger = document.getElementById('hamburger');
+  const navLinks  = document.getElementById('navLinks');
+  const backdrop  = document.getElementById('navBackdrop');
 
-      /* ===== Hamburger & backdrop ===== */
-      const hamburger = document.getElementById('hamburger');
-      const navLinks  = document.getElementById('navLinks');
-      const backdrop  = document.getElementById('navBackdrop');
+  /* Spacer per header fixed + variabile CSS per top del menu */
+  const setSpacer = () => {
+    if (!header || !spacer) return;
+    const h = header.offsetHeight;
+    document.documentElement.style.setProperty('--header-h', h + 'px');
+    spacer.style.height = h + 'px';
+  };
+  setSpacer();
+  window.addEventListener('resize', setSpacer);
+  setTimeout(setSpacer, 200);
 
-      const closeMenu = () => {
-        navLinks?.classList.remove('active');
-        hamburger?.classList.remove('active');
-        hamburger?.setAttribute('aria-expanded', 'false');
-        if (backdrop) { backdrop.hidden = true; backdrop.classList.remove('show'); }
-      };
-      const toggleMenu = () => {
-        const isOpen = navLinks.classList.toggle('active');
-        hamburger.classList.toggle('active', isOpen);
-        hamburger.setAttribute('aria-expanded', String(isOpen));
-        if (backdrop) {
-          backdrop.hidden = !isOpen;
-          requestAnimationFrame(() => backdrop.classList.toggle('show', isOpen));
-        }
-      };
+  const closeMenu = () => {
+    if (!navLinks || !hamburger) return;
+    navLinks.classList.remove('active');
+    hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+    if (backdrop) { backdrop.hidden = true; backdrop.classList.remove('show'); }
+  };
 
-      hamburger?.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
-      navLinks?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-      document.addEventListener('click', (e) => {
-        if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) closeMenu();
-      });
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
-      window.addEventListener('resize', () => { if (window.innerWidth > 800) closeMenu(); });
+  const toggleMenu = () => {
+    if (!navLinks || !hamburger) return;
+    const isOpen = navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active', isOpen);
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+    document.body.classList.toggle('nav-open', isOpen);
+    if (backdrop) {
+      backdrop.hidden = !isOpen;
+      requestAnimationFrame(() => backdrop.classList.toggle('show', isOpen));
+    }
+  };
 
-      /* ===== Demo banner ogni 3 minuti ===== */
-      const banner = document.getElementById('demoBanner');
-      const bannerClose = document.getElementById('demoClose');
-      let isVisible = false;
-
-      const showBanner = () => {
-        if (isVisible) return;
-        banner.classList.add('show');
-        banner.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('banner-visible'); // aggiunge padding-bottom in CSS per non coprire le card
-        isVisible = true;
-      };
-      const hideBanner = () => {
-        banner.classList.remove('show');
-        banner.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('banner-visible');
-        isVisible = false;
-      };
-
-      // Mostra subito e poi ogni 3 minuti
-      showBanner();
-      bannerClose.addEventListener('click', hideBanner);
-      setInterval(showBanner, 180000);
+  if (hamburger && navLinks) {
+    // Apri/chiudi
+    hamburger.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+    // Chiudi quando clicchi un link del menu
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    // Chiudi clic fuori
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) closeMenu();
     });
+    // Chiudi cliccando il backdrop
+    backdrop && backdrop.addEventListener('click', closeMenu);
+    // Chiudi con ESC
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+    // Chiudi tornando a desktop
+    window.addEventListener('resize', () => { if (window.innerWidth > 900) closeMenu(); });
+  }
+
+
+    /* ====== BANNER DEMO OGNI 3 MINUTI ====== */
+    const banner = document.getElementById('demoBanner');
+    const bannerClose = document.getElementById('demoClose');
+    let bannerTimer = null;
+    let isVisible = false;
+
+    const showBanner = () => {
+      if (isVisible) return;        // evita doppioni
+      banner.classList.add('show');
+      banner.setAttribute('aria-hidden', 'false');
+      isVisible = true;
+    };
+
+    const hideBanner = () => {
+      banner.classList.remove('show');
+      banner.setAttribute('aria-hidden', 'true');
+      isVisible = false;
+    };
+
+    // Mostra subito all'avvio
+    showBanner();
+
+    // Chiudi al click sulla X
+    bannerClose.addEventListener('click', hideBanner);
+
+    // Ogni 3 minuti ripresenta (180000 ms)
+    bannerTimer = setInterval(() => {
+      showBanner();
+    }, 180000);
+  });
+
+    document.addEventListener('DOMContentLoaded', () => {
+    const header  = document.getElementById('siteHeader');
+    const spacer  = document.getElementById('header-spacer');
+
+    function setSpacerHeight(){
+      if(!header || !spacer) return;
+      spacer.style.height = header.offsetHeight + 'px';
+    }
+
+    setSpacerHeight();
+    window.addEventListener('resize', setSpacerHeight);
+
+    /* opzionale: se i font web cambiano altezza dopo il load */
+    setTimeout(setSpacerHeight, 200);
+  });
   </script>
 </body>
 </html>
