@@ -2,7 +2,10 @@
 body { font-family: Verdana, Geneva, Tahoma, sans-serif; background: #f8f9fa; color: #394e65; }
 
 html, body {
+  max-width: 100%;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 
@@ -657,8 +660,9 @@ body {
 
 /* MAIN CONTENT */
 .main-content {
-  flex: 1;
-  padding: 40px;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .main-content h2 {
@@ -754,6 +758,14 @@ body {
 
 .btn-reject {
   background: #dc3545;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
 }
 
 /* RESPONSIVE */
