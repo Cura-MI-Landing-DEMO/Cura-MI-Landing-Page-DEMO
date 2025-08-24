@@ -433,6 +433,7 @@ body {
 .dashboard-container {
   display: flex;
   min-height: 100vh;
+  padding: 150px 10px;
 }
 .sidebar {
   width: 240px;
@@ -797,10 +798,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  font-size: 16px;
+  font-size: 35px;
   color: white;
   transition: background 0.3s;
 }
@@ -813,7 +814,9 @@ body {
 /* VERSIONE MOBILE: pulsanti flottanti */
 @media (max-width: 800px) {
   .contact-icons {
-    display: none; /* nascondo in header */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
   .icon-btn.call,
   .icon-btn.whatsapp {
