@@ -88,10 +88,86 @@
 
   </div>
 
+  <!-- CALL & WHATSAPP -->
+<div class="contact-icons">
+  <a href="tel:+393331234567" class="icon-btn call" aria-label="Chiama">
+    <i class="fa-solid fa-phone"></i>
+  </a>
+  <a href="https://wa.me/393331234567" target="_blank" class="icon-btn whatsapp" aria-label="WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer glass-footer" role="contentinfo">
+  <div class="footer-content">
+    <!-- Colonna sinistra -->
+    <div class="footer-left">
+      <a href="#">© 2025 Cura-MI - info@cura-mi.it</a>
+    </div>
+
+    <!-- Colonna centrale -->
+    <div class="footer-center">
+      <p class="demo-text">
+       ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+  <strong>Cura-mi</strong> è in fase di costruzione, ma puoi già dirci la tua <br>
+  Rilascio previsto: <strong>2026</strong>.
+      </p>
+    </div>
+
+    <!-- Colonna destra -->
+    <div class="footer-right">
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<!-- BANNER DEMO (ripetizione ogni 3 minuti) -->
+<div id="demoBanner" class="demo-banner" role="status" aria-live="polite" aria-hidden="true">
+  <button class="demo-close" id="demoClose" aria-label="Chiudi avviso">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+  <strong>Cura-mi</strong> è in fase di costruzione, ma puoi già dirci la tua <br>
+  Rilascio previsto: <strong>2026</strong>.
+</div>
+
 <script>
   document.getElementById('hamburger').addEventListener('click', () => {
     document.getElementById('navLinks').classList.toggle('active');
+  
+
+  /* ====== BANNER DEMO OGNI 3 MINUTI ====== */
+  const banner = document.getElementById('demoBanner');
+    const bannerClose = document.getElementById('demoClose');
+    let bannerTimer = null;
+    let isVisible = false;
+
+    const showBanner = () => {
+      if (isVisible) return;        // evita doppioni
+      banner.classList.add('show');
+      banner.setAttribute('aria-hidden', 'false');
+      isVisible = true;
+    };
+
+    const hideBanner = () => {
+      banner.classList.remove('show');
+      banner.setAttribute('aria-hidden', 'true');
+      isVisible = false;
+    };
+
+    // Mostra subito all'avvio
+    showBanner();
+
+    // Chiudi al click sulla X
+    bannerClose.addEventListener('click', hideBanner);
+
+    // Ogni 3 minuti ripresenta (180000 ms)
+    bannerTimer = setInterval(() => {
+      showBanner();
+    }, 180000);
   });
+
 </script>
 </body>
 </html>
