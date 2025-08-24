@@ -2,10 +2,9 @@
 body { font-family: Verdana, Geneva, Tahoma, sans-serif; background: #f8f9fa; color: #394e65; }
 
 html, body {
-  max-width: 100%;
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
+  height: auto !important;
+  overflow-y: auto !important;
+  max-height: none !important;
 }
 
 
@@ -661,7 +660,7 @@ body {
 /* MAIN CONTENT */
 .main-content {
   width: 100%;
-  padding: 20px;
+  padding: 40px;
   box-sizing: border-box;
 }
 
@@ -722,15 +721,14 @@ body {
 /* APPOINTMENTS TABLE */
 .appointments table {
   width: 100%;
-  table-layout: fixed;
+  border-collapse: collapse;
 }
 
 .appointments th,
 .appointments td {
-  font-size: 14px;
-  padding: 10px;    
-  
- 
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
 .appointments th {
@@ -742,31 +740,6 @@ body {
   background: rgba(255,255,255,0.3);
 }
 
-@media (max-width: 768px) {
-  .appointments-scroll {
-    max-height: 300px;         /* altezza fissa per attivare overflow */
-    overflow-y: auto;
-    overflow-x: hidden;
-    margin-top: 10px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .appointments table {
-    width: 100%;
-    min-width: 800px; /* evita che le colonne vadano troppo strette */
-    
-  }
-
-  .appointments th,
-  .appointments td {
-    font-size: 14px;
-    padding: 10px;
-  }
-}
 .btn-accept,
 .btn-reject {
   border: none;
@@ -786,6 +759,19 @@ body {
   background: #dc3545;
 }
 
+/* === Scroll orizzontale alla tabella solo su mobile === */
+@media (max-width: 768px) {
+  .table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .appointments-scroll table {
+    min-width: 600px;
+  }
+}
+
 @media (max-width: 768px) {
   .main-content {
     width: 100%;
@@ -793,7 +779,6 @@ body {
     box-sizing: border-box;
   }
 }
-
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
@@ -1296,5 +1281,143 @@ body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: 
 /* (facoltativo) quando il menu è aperto, impedisce lo scroll sotto */
 body.nav-open{
   overflow: hidden;
+}
+
+
+
+
+/* ✅ Struttura generale */
+html, body {
+  height: auto;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f2f5;
+  color: #394e65;
+  overflow-x: hidden;
+}
+
+/* ✅ Dashboard layout */
+.dashboard-container {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(20px);
+  padding: 20px;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+}
+
+.sidebar-logo {
+  font-size: 22px;
+  font-weight: bold;
+  color: #139395;
+  margin-bottom: 30px;
+}
+
+.sidebar-nav .nav-link {
+  display: block;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  color: #394e65;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.sidebar-nav .nav-link:hover,
+.sidebar-nav .nav-link.active {
+  background: rgba(255,255,255,0.4);
+  color: #d7ae46;
+}
+
+/* ✅ Main area */
+.main-content {
+  flex: 1;
+  padding: 40px;
+  overflow: hidden;
+}
+
+.cards-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.card {
+  flex: 1;
+  min-width: 200px;
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.card h3 {
+  color: #d7ae46;
+  margin-bottom: 10px;
+}
+
+/* ✅ Tabella scrollabile */
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  background: rgba(255,255,255,0.6);
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.table-scroll table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+}
+
+.table-scroll th,
+.table-scroll td {
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+  color: #394e65;
+  border-bottom: 1px solid #ccc;
+}
+
+/* ✅ Responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    box-shadow: none;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .cards-row {
+    flex-direction: column;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .table-scroll {
+    max-height: 240px;
+    overflow-y: auto;
+  }
 }
 
