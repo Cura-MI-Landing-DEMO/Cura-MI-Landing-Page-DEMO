@@ -8,38 +8,47 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
 </head>
 <body>
+  <div class="page-wrapper">
 
-  <!-- HEADER con logo, hamburger menu, e ricerca -->
-  <header class="header">
-    <div class="topbar-content">
-      <img class="logo" src="/images/logocurami.png" alt="Logo Cura‑MI">
+  <!-- HEADER con Logo, Menu Hamburger e Search a destra -->
+  <!-- HEADER -->
+<header class="header header--fixed" id="siteHeader">
 
-      <nav class="nav-links" id="navLinks">
-        <a href="./Home.html" class="nav-item"><i class="fa-solid fa-circle-user"></i> Home</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-circle-user"></i> Accedi</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-user-plus"></i> Registrati</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-circle-info"></i> Chi siamo</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-list"></i> I nostri Servizi</a>
-      </nav>
+  <div class="topbar-content">
+    <img class="logo" src="images/logocurami.png" alt="Logo Cura‑MI">
 
-      <div id="search" class="topbar-section">
-        <input id="search-box" class="box-search" type="text" placeholder="Servizi">
-      </div>
+    <!-- nav centrata -->
+    <nav class="nav-links" id="navLinks" aria-label="Navigazione principale">
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i>Home</a>
+      <a href="accedieregistrati.html" class="nav-item"><i class="fa-solid fa-circle-user"></i> Accedi</a>
+      <a href="accedieregistrati.html" class="nav-item"><i class="fa-solid fa-user-plus"></i> Registrati</a>
+      <a href="#" class="nav-item"><i class="fa-solid fa-circle-info"></i> Chi siamo</a>
+      <a href="inostriservizi.html" class="nav-item"><i class="fa-solid fa-pump-medical"></i>I nostri Servizi</a>
+      <a href="dashboardutente.html" class="nav-item"><i class="fa-solid fa-chart-line"></i>DEMO Dashboard Utente</a>
+      <a href="operatordashboard.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> DEMO Dashboard operatore</a>
+    </nav>
 
-      <div class="hamburger" id="hamburger">
-        <span></span><span></span><span></span>
-      </div>
+    <!-- AL POSTO DEL VECCHIO SEARCH -->
+<a class="quick-action" href="inostriservizi.html" aria-label="Vai ai Servizi">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <span class="qa-label">Servizi</span>
+</a>
+<!-- FINE SOSTITUZIONE -->
+
+    <!-- hamburger -->
+    <button class="hamburger" id="hamburger" aria-label="Apri/chiudi menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- banner giallo -->
+  <div class="navbar-yellow">
+    <h1 class="h1">"Prenoti in pochi passi, con chiarezza sui tempi e sul costo" WORK IN PROGRESS…</h1>
+    <div id="studi-disponibili">
+      <a href="./studioshtml.html">Studi disponibili <i class="fa-solid fa-map-location-dot"></i></a>
     </div>
-
-    <div class="navbar-yellow">
-      <h1 class="h1">
-        "Prenoti in pochi passi, con chiarezza sui tempi e sul costo" WORK IN PROGRESS…
-      </h1>
-      <div id="studi-disponibili">
-        <a href="#" class="studilink">Studi disponibili <i class="fa-solid fa-map-location-dot"></i></a>
-      </div>
-    </div>
-  </header>
+  </div>
+</header>
 
   <!-- Sezione form e mappa -->
   <div class="studidi-section">
@@ -73,10 +82,102 @@
     </div>
   </div>
 
+<!-- FOOTER -->
+<footer class="footer glass-footer" role="contentinfo">
+  <div class="footer-content">
+    <div class="footer-left">
+      <a href="#">© 2025 Cura-MI - info@cura-mi.it</a>
+    </div>
+    <div class="footer-center">
+      <p class="demo-text">
+        ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+        <strong>Cura-mi</strong> è in fase di costruzione, ma puoi già dirci la tua <br>
+        Rilascio previsto: <strong>2026</strong>.
+      </p>
+    </div>
+    <div class="footer-right">
+      <a href="#">Privacy</a>
+    </div>
+  </div>
+</footer>
+
+<!-- BANNER DEMO (ripetizione ogni 3 minuti) -->
+<div id="demoBanner" class="demo-banner" role="status" aria-live="polite" aria-hidden="true">
+  <button class="demo-close" id="demoClose" aria-label="Chiudi avviso">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+  <strong>Cura-mi</strong> è in fase di costruzione, ma puoi già dirci la tua. <br>
+  Rilascio previsto: <strong>2026</strong>.
+</div>
+
+
+
+<!-- SCRIPT -->
 <script>
-  document.getElementById('hamburger').addEventListener('click', () => {
-    document.getElementById('navLinks').classList.toggle('active');
+  document.addEventListener('DOMContentLoaded', () => {
+    /* ===== Header spacer ===== */
+    const header  = document.getElementById('siteHeader');
+    const spacer  = document.getElementById('header-spacer');
+    const setSpacer = () => { if (header && spacer) spacer.style.height = header.offsetHeight + 'px'; };
+    setSpacer();
+    window.addEventListener('resize', setSpacer);
+    setTimeout(setSpacer, 200);
+
+    /* ===== Hamburger & backdrop ===== */
+    const hamburger = document.getElementById('hamburger');
+    const navLinks  = document.getElementById('navLinks');
+    const backdrop  = document.getElementById('navBackdrop');
+
+    const closeMenu = () => {
+      navLinks?.classList.remove('active');
+      hamburger?.classList.remove('active');
+      hamburger?.setAttribute('aria-expanded', 'false');
+      if (backdrop) { backdrop.hidden = true; backdrop.classList.remove('show'); }
+    };
+    const toggleMenu = () => {
+      const isOpen = navLinks.classList.toggle('active');
+      hamburger.classList.toggle('active', isOpen);
+      hamburger.setAttribute('aria-expanded', String(isOpen));
+      if (backdrop) {
+        backdrop.hidden = !isOpen;
+        requestAnimationFrame(() => backdrop.classList.toggle('show', isOpen));
+      }
+    };
+
+    hamburger?.addEventListener('click', (e) => { e.stopPropagation(); toggleMenu(); });
+    navLinks?.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    document.addEventListener('click', (e) => {
+      if (!navLinks.contains(e.target) && !hamburger.contains(e.target)) closeMenu();
+    });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+    window.addEventListener('resize', () => { if (window.innerWidth > 800) closeMenu(); });
+
+    /* ===== Demo banner ogni 3 minuti ===== */
+    const banner = document.getElementById('demoBanner');
+    const bannerClose = document.getElementById('demoClose');
+    let isVisible = false;
+
+    const showBanner = () => {
+      if (isVisible) return;
+      banner.classList.add('show');
+      banner.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('banner-visible'); // aggiunge padding-bottom in CSS per non coprire le card
+      isVisible = true;
+    };
+    const hideBanner = () => {
+      banner.classList.remove('show');
+      banner.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('banner-visible');
+      isVisible = false;
+    };
+
+    // Mostra subito e poi ogni 3 minuti
+    showBanner();
+    bannerClose.addEventListener('click', hideBanner);
+    setInterval(showBanner, 180000);
   });
 </script>
+</div>
 </body>
 </html>

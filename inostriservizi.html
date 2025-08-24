@@ -9,37 +9,44 @@
 </head>
 <body>
 
-  <!-- HEADER (fisso) -->
-  <header class="header header--fixed" id="siteHeader">
-    <div class="topbar-content">
-      <img class="logo" src="images/logocurami.png" alt="Logo Cura‑MI">
+  <!-- HEADER con Logo, Menu Hamburger e Search a destra -->
+  <!-- HEADER -->
+<header class="header header--fixed" id="siteHeader">
 
-      <nav class="nav-links" id="navLinks" aria-label="Navigazione principale">
-        <a href="./Home.html" class="nav-item"><i class="fa-solid fa-house"></i> Home</a>
-        <a href="./Accedieregistrati.html" class="nav-item"><i class="fa-solid fa-circle-user"></i> Accedi</a>
-        <a href="./Accedieregistrati.html" class="nav-item"><i class="fa-solid fa-user-plus"></i> Registrati</a>
-        <a href="#" class="nav-item"><i class="fa-solid fa-circle-info"></i> Chi siamo</a>
-      </nav>
+  <div class="topbar-content">
+    <img class="logo" src="images/logocurami.png" alt="Logo Cura‑MI">
 
-      <div id="search" class="topbar-section">
-        <input id="search-box" class="box-search" type="text" placeholder="Servizi">
-      </div>
+    <!-- nav centrata -->
+    <nav class="nav-links" id="navLinks" aria-label="Navigazione principale">
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i>Home</a>
+      <a href="accedieregistrati.html" class="nav-item"><i class="fa-solid fa-circle-user"></i> Accedi</a>
+      <a href="accedieregistrati.html" class="nav-item"><i class="fa-solid fa-user-plus"></i> Registrati</a>
+      <a href="#" class="nav-item"><i class="fa-solid fa-circle-info"></i> Chi siamo</a>
+      <a href="dashboardutente.html" class="nav-item"><i class="fa-solid fa-chart-line"></i>DEMO Dashboard Utente</a>
+      <a href="operatordashboard.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> DEMO Dashboard operatore</a>
+    </nav>
 
-      <!-- hamburger -->
-      <button class="hamburger" id="hamburger" aria-label="Apri/chiudi menu" aria-expanded="false" aria-controls="navLinks">
-        <span></span><span></span><span></span>
-      </button>
+    <!-- AL POSTO DEL VECCHIO SEARCH -->
+<a class="quick-action" href="inostriservizi.html" aria-label="Vai ai Servizi">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <span class="qa-label">Servizi</span>
+</a>
+<!-- FINE SOSTITUZIONE -->
+
+    <!-- hamburger -->
+    <button class="hamburger" id="hamburger" aria-label="Apri/chiudi menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- banner giallo -->
+  <div class="navbar-yellow">
+    <h1 class="h1">"Prenoti in pochi passi, con chiarezza sui tempi e sul costo" WORK IN PROGRESS…</h1>
+    <div id="studi-disponibili">
+      <a href="./studioshtml.html">Studi disponibili <i class="fa-solid fa-map-location-dot"></i></a>
     </div>
-
-    <div class="navbar-yellow">
-      <h1 class="h1">
-        "Prenoti in pochi passi, con chiarezza sui tempi e sul costo" WORK IN PROGRESS…
-      </h1>
-      <div id="studi-disponibili">
-        <a href="#"><i class="fa-solid fa-map-location-dot"></i> Studi disponibili</a>
-      </div>
-    </div>
-  </header>
+  </div>
+</header>
 
   <!-- spacer per header fixed -->
   <div id="header-spacer" aria-hidden="true"></div>
@@ -105,6 +112,16 @@
       </div>
     </div>
   </section>
+
+  <!-- CALL & WHATSAPP -->
+<div class="contact-icons">
+  <a href="tel:+393331234567" class="icon-btn call" aria-label="Chiama">
+    <i class="fa-solid fa-phone"></i>
+  </a>
+  <a href="https://wa.me/393331234567" target="_blank" class="icon-btn whatsapp" aria-label="WhatsApp">
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+</div>
 
   <!-- FOOTER -->
   <footer class="footer glass-footer" role="contentinfo">

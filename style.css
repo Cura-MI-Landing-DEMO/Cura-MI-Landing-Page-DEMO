@@ -195,55 +195,77 @@ body { font-family: Arial, Helvetica, sans-serif; background: #f8f9fa; color: #3
 
 /* FORM + MAP SECTION */
 .studidi-section {
-  display: flex; gap: 40px; flex-wrap: wrap;
-  justify-content: center; padding: 40px 20px;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 200px 20px;
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 .studidi-form {
-  flex: 1; min-width: 280px; max-width: 400px;
-  background: rgba(255,255,255,0.9); backdrop-filter: blur(5px);
-  padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  flex: 1;
+  min-width: 280px;
+  max-width: 400px;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(5px);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 .studidi-form h2 {
-  color: #139395; margin-bottom: 15px; font-size: 20px;
+  color: #139395;
+  margin-bottom: 15px;
+  font-size: 20px;
 }
 .studidi-form form label {
-  display: block; margin-bottom: 12px;
-  color: #394e65; font-size: 14px;
+  display: block;
+  margin-bottom: 12px;
+  color: #394e65;
+  font-size: 14px;
 }
 .studidi-form form select,
 .studidi-form form input {
-  width: 100%; padding: 8px; margin-top: 4px;
-  border: 1px solid #ccc; border-radius: 4px;
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
-.studidi-form .button1 { margin-top: 10px; }
-
-/* MAP WITH MARKERS */
+.studidi-form .button1 {
+  margin-top: 10px;
+}
 .studidi-map {
-  position: relative; flex: 1; min-width: 300px; max-width: 500px;
+  position: relative;
+  flex: 1;
+  min-width: 300px;
+  max-width: 500px;
+  break-inside: avoid;
+  page-break-inside: avoid;
 }
 .map-img {
-  width: 100%; display: block; border-radius: 8px;
+  width: 100%;
+  display: block;
+  border-radius: 8px;
 }
 .marker {
-  position: absolute; background: #d7ae46; color: white;
-  padding: 4px 8px; border-radius: 4px;
-  font-size: 12px; transform: translate(-50%, -50%);
+  position: absolute;
+  background: #d7ae46;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  transform: translate(-50%, -50%);
   pointer-events: none;
 }
-
-/* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
-  .nav-links {
-    display: none; flex-direction: column; background: white;
-    position: absolute; top: 60px; left: 0; right: 0;
-    gap: 10px; padding: 10px 0; z-index: 1000;
-  }
-  .nav-links.active { display: flex; }
-  .hamburger { display: flex; }
-  .navbar-yellow { flex-direction: column; align-items: center; }
-  .h1 { font-size: 16px; margin-bottom: 8px; }
   .studidi-section {
-    flex-direction: column; align-items: center; text-align: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 230px 10px;
   }
 }
 
