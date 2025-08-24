@@ -722,14 +722,15 @@ body {
 /* APPOINTMENTS TABLE */
 .appointments table {
   width: 100%;
-  border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .appointments th,
 .appointments td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  padding: 10px;    
+  
+ 
 }
 
 .appointments th {
@@ -741,6 +742,31 @@ body {
   background: rgba(255,255,255,0.3);
 }
 
+@media (max-width: 768px) {
+  .appointments-scroll {
+    max-height: 300px;         /* altezza fissa per attivare overflow */
+    overflow-y: auto;
+    overflow-x: hidden;
+    margin-top: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .appointments table {
+    width: 100%;
+    min-width: 800px; /* evita che le colonne vadano troppo strette */
+    
+  }
+
+  .appointments th,
+  .appointments td {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
 .btn-accept,
 .btn-reject {
   border: none;
@@ -767,6 +793,7 @@ body {
     box-sizing: border-box;
   }
 }
+
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
