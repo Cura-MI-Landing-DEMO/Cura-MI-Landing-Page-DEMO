@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Operatore - Cura‑MI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="dashboardoperatore.css"/>
+  
+</head>
+<body>
+
+  <div class="dashboard">
+    <aside class="sidebar">
+      <h2>👩‍⚕️ DEMO - Cura-MI</h2>
+      <a href="disponibilitaoperatore.html"><i class="fa-solid fa-calendar-day"></i> Disponibilità</a>
+      <a href="#"><i class="fa-solid fa-handshake-angle"></i> Prenotazioni</a>
+      <a href="#"><i class="fa-solid fa-credit-card"></i> Pagamenti</a>
+    </aside>
+
+    <main class="main-dashboard">
+      <h1>Benvenuto, [Nome Operatore]</h1>
+
+      <div class="cards-row">
+        <div class="card">
+          <h3>Prossima prenotazione</h3>
+          <p>25 Agosto, 10:00</p>
+        </div>
+        <div class="card">
+          <h3>Totale prenotazioni</h3>
+          <p>12 nel mese</p>
+        </div>
+        <div class="card">
+          <h3>Utenti attivi</h3>
+          <p>7 pazienti</p>
+        </div>
+      </div>
+
+      <section class="chart-section">
+        <h2>Statistiche orari disponibili</h2>
+        <canvas id="availabilityChart" width="400" height="180"></canvas>
+      </section>
+
+      <section class="table-section">
+        <h2>Prenotazioni in attesa</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Servizio</th>
+              <th>Utente</th>
+              <th>Pagamento</th>
+              <th>Azione</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>22/08/2025</td>
+              <td>Infermiere</td>
+              <td>Mario Rossi</td>
+              <td>Da verificare</td>
+              <td>
+                <button class="btn-accept">Accetta</button>
+                <button class="btn-reject">Rifiuta</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('availabilityChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+        datasets: [{
+          label: 'Ore disponibili',
+          data: [5, 6, 4, 5, 7, 3, 2],
+          backgroundColor: '#FDC043'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  </script>
+</body>
+</html>

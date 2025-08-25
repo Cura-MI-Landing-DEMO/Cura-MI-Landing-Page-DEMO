@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Disponibilità – Operatore</title>
+  <link rel="stylesheet" href="disponibilitaoperatore.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Banner DEMO -->
+  <div id="demoBanner" class="demo-banner">
+    ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+    <strong>Cura‑mi</strong> è in fase di costruzione, ma puoi già dirci la tua<br>
+    Rilascio previsto: <strong>2026</strong>. Provala Subito!
+    <span class="demo-close" onclick="document.getElementById('demoBanner').style.display='none'">✕</span>
+  </div>
+
+  <div class="dashboard">
+    <aside class="sidebar">
+      <h2>👩‍⚕️ Cura‑MI</h2>
+      <div class="operator-id">Tessera: <strong>123456</strong></div>
+      <a class="active"><i class="fa-solid fa-calendar-day"></i> Disponibilità</a>
+      <a><i class="fa-solid fa-handshake-angle"></i> Prenotazioni</a>
+      <a><i class="fa-solid fa-credit-card"></i> Pagamenti</a>
+      <a><i class="fa-solid fa-comment-dots"></i> Chat</a>
+    </aside>
+
+    <main class="main-dashboard">
+      <h1>Gestione Disponibilità</h1>
+      <button id="resetDemo" class="reset-btn">🔁 Reset DEMO</button>
+
+      <form class="availability-form">
+        <h2>Disponibilità Operatore</h2>
+
+        <div class="field-group">
+          <label>Seleziona i giorni</label>
+          <div class="day-checkboxes">
+            <label><input type="checkbox" value="Lun"> Lun</label>
+            <label><input type="checkbox" value="Mar"> Mar</label>
+            <label><input type="checkbox" value="Mer"> Mer</label>
+            <label><input type="checkbox" value="Gio"> Gio</label>
+            <label><input type="checkbox" value="Ven"> Ven</label>
+            <label><input type="checkbox" value="Sab"> Sab</label>
+            <label><input type="checkbox" value="Dom"> Dom</label>
+          </div>
+        </div>
+
+        <div class="times-section">
+          <label>Fasce orarie per giorno</label>
+          <div id="timesContainer"></div>
+          <button type="button" id="addTime">+ Aggiungi fascia</button>
+        </div>
+
+        <div class="field-group">
+          <label>Settimana corrente</label>
+          <div class="week-widget">
+            <span id="weekDisplay"></span>
+            <input type="hidden" id="weekCounter" />
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit">💾 Salva Disponibilità</button>
+        </div>
+      </form>
+
+      <div class="availability-summary">
+        <h3>Disponibilità Inserite</h3>
+        <ul id="weekList"></ul>
+      </div>
+    </main>
+  </div>
+
+  <footer class="footer glass-footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#">© 2025 Cura‑MI - info@cura‑mi.it</a>
+      </div>
+      <div class="footer-center">
+        <p class="demo-text">
+          ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+          <strong>Cura‑mi</strong> è in fase di costruzione, ma puoi già dirci la tua<br>
+          Rilascio previsto: <strong>2026</strong>.
+        </p>
+      </div>
+      <div class="footer-right">
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="contact-icons">
+    <a href="tel:+393331234567" class="icon-btn call" aria-label="Chiama">
+      <i class="fa-solid fa-phone"></i>
+    </a>
+    <a href="https://wa.me/393331234567" target="_blank" class="icon-btn whatsapp" aria-label="WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const weekdays = ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
+      const timesContainer = document.getElementById('timesContainer');
+      const addTimeBtn = document.getElementById('addTime');
+      const weekDisplay = document.getElementById('weekDisplay');
+      const weekCounterInput = document.getElementById('weekCounter');
+      const weekList = document.getElementById('weekList');
+      const resetBtn = document.getElementById('resetDemo');
+      const form = document.querySelector('.availability-form');
+      const dateFormatter = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
+
+      const getCurrentWeekIndex = () => {
+        const baseDate = new Date(2025, 7, 25); // 25 Aug 2025
+        const today = new Date();
+        const diff = today - baseDate;
+        return diff > 0 ? Math.floor(diff / (7 * 86400000)) : 0;
+      };
+
+      const calculateWeekRange = (idx) => {
+        const baseMonday = new Date(2025, 7, 25);
+        const monday = new Date(baseMonday);
+        monday.setDate(baseMonday.getDate() + idx * 7);
+        const sunday = new Date(monday);
+        sunday.setDate(monday.getDate() + 6);
+        return `${dateFormatter.format(monday)} – ${dateFormatter.format(sunday)}`;
+      };
+
+      let weekIndex = parseInt(localStorage.getItem('weekCounter')) || getCurrentWeekIndex();
+      let log = JSON.parse(localStorage.getItem('weekLog')) || [];
+
+      const updateWeekDisplay = () => {
+        weekDisplay.textContent = calculateWeekRange(weekIndex);
+      };
+
+      const renderLog = () => {
+        weekList.innerHTML = '';
+        log.forEach(entry => {
+          const li = document.createElement('li');
+          li.textContent = entry;
+          weekList.appendChild(li);
+        });
+      };
+
+      addTimeBtn.addEventListener('click', () => {
+        const div = document.createElement('div');
+        div.className = 'time-pair';
+        div.innerHTML = `
+          <select class="day-select">
+            <option value="">-- Giorno --</option>
+            ${weekdays.map(d => `<option>${d}</option>`).join('')}
+          </select>
+          <input type="time"> – <input type="time">
+          <button type="button" class="remove-time">✕</button>`;
+        timesContainer.appendChild(div);
+        div.querySelector('.remove-time').onclick = () => div.remove();
+      });
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        timesContainer.querySelectorAll('.time-pair').forEach(tp => {
+          const day = tp.querySelector('.day-select').value;
+          const start = tp.querySelectorAll('input')[0].value;
+          const end = tp.querySelectorAll('input')[1].value;
+          if (day && start && end) {
+            log.push(`${calculateWeekRange(weekIndex)} → ${day}: ${start}–${end}`);
+          }
+        });
+        weekIndex++;
+        localStorage.setItem('weekCounter', weekIndex);
+        localStorage.setItem('weekLog', JSON.stringify(log));
+        updateWeekDisplay();
+        renderLog();
+        timesContainer.innerHTML = '';
+      });
+
+      resetBtn.addEventListener('click', () => {
+        localStorage.removeItem('weekCounter');
+        localStorage.removeItem('weekLog');
+        weekIndex = getCurrentWeekIndex();
+        log = [];
+        updateWeekDisplay();
+        renderLog();
+      });
+
+      updateWeekDisplay();
+      renderLog();
+    });
+  </script>
+</body>
+</html>

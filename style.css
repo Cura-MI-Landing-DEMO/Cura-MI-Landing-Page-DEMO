@@ -453,11 +453,25 @@ body { font-family: 'Times New Roman', Times, serif; background: #f8f9fa; color:
 body {
   background: #f0f2f5;
 }
-.dashboard-container {
+.dashboard-container-operator {
   display: flex;
   min-height: 100vh;
-  padding: 150px 10px;
+  padding: 5px 10px;
+  min-width: 100vh
 }
+
+.h1-operator {
+
+  font-size: 35px;
+  color: #139395;
+  margin-top: 30px;
+}
+.dashboard-container-utente {
+  display: flex;
+  min-height: 100vh;
+  padding: 200px 10px;
+}
+
 .sidebar {
   width: 240px;
   background: rgba(255,255,255,0.2);
@@ -484,10 +498,20 @@ body {
   background: rgba(255,255,255,0.4);
   color: #FDC043;
 }
-.main-content {
+
+.main-content-utente {
   flex: 1;
   padding: 40px;
 }
+
+.main-content-operatore {
+  width: 100%;
+  flex: 1;
+  padding: 40px;
+  margin-top: 100px;
+  margin-right: 700px;
+}
+
 .main-content h1 {
   margin-bottom: 30px;
   color: #139395;
@@ -545,7 +569,7 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .dashboard-container {
+  .dashboard-container-utente {
     flex-direction: column;
   }
   .sidebar {
