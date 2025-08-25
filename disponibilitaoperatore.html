@@ -49,7 +49,12 @@
         <div class="times-section">
           <label>Fasce orarie per giorno</label>
           <div id="timesContainer"></div>
-          <button type="button" id="addTime">+ Aggiungi fascia</button>
+          <button type="button" id="addTime" class="add-time">+ Aggiungi fascia</button>
+        </div>
+
+        <div class="field-group">
+          <label><input type="checkbox" id="inStudioFlag"> In studio</label>
+          <label><input type="checkbox" id="homeFlag"> A domicilio</label>
         </div>
 
         <div class="field-group">
@@ -61,7 +66,7 @@
         </div>
 
         <div class="form-actions">
-          <button type="submit">💾 Salva Disponibilità</button>
+          <button type="submit" class="btn-submit">💾 Salva Disponibilità</button>
         </div>
       </form>
 
@@ -70,6 +75,15 @@
         <ul id="weekList"></ul>
       </div>
     </main>
+  </div>
+
+  <div class="contact-icons">
+    <a href="tel:+393331234567" class="icon-btn call" aria-label="Chiama">
+      <i class="fa-solid fa-phone"></i>
+    </a>
+    <a href="https://wa.me/393331234567" target="_blank" class="icon-btn whatsapp" aria-label="WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
   </div>
 
   <footer class="footer glass-footer">
@@ -90,15 +104,6 @@
     </div>
   </footer>
 
-  <div class="contact-icons">
-    <a href="tel:+393331234567" class="icon-btn call" aria-label="Chiama">
-      <i class="fa-solid fa-phone"></i>
-    </a>
-    <a href="https://wa.me/393331234567" target="_blank" class="icon-btn whatsapp" aria-label="WhatsApp">
-      <i class="fa-brands fa-whatsapp"></i>
-    </a>
-  </div>
-
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const weekdays = ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'];
@@ -109,19 +114,21 @@
       const weekList = document.getElementById('weekList');
       const resetBtn = document.getElementById('resetDemo');
       const form = document.querySelector('.availability-form');
+      const inStudioCheckbox = document.getElementById('inStudioFlag');
+      const homeCheckbox = document.getElementById('homeFlag');
       const dateFormatter = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
 
       const getCurrentWeekIndex = () => {
-        const baseDate = new Date(2025, 7, 25); // 25 Aug 2025
+        const baseDate = new Date(2025, 7, 25);
         const today = new Date();
         const diff = today - baseDate;
         return diff > 0 ? Math.floor(diff / (7 * 86400000)) : 0;
       };
 
-      const calculateWeekRange = (idx) => {
-        const baseMonday = new Date(2025, 7, 25);
-        const monday = new Date(baseMonday);
-        monday.setDate(baseMonday.getDate() + idx * 7);
+      const calculateWeekRange = idx => {
+        const base = new Date(2025, 7, 25);
+        const monday = new Date(base);
+        monday.setDate(base.getDate() + idx * 7);
         const sunday = new Date(monday);
         sunday.setDate(monday.getDate() + 6);
         return `${dateFormatter.format(monday)} – ${dateFormatter.format(sunday)}`;
@@ -130,10 +137,7 @@
       let weekIndex = parseInt(localStorage.getItem('weekCounter')) || getCurrentWeekIndex();
       let log = JSON.parse(localStorage.getItem('weekLog')) || [];
 
-      const updateWeekDisplay = () => {
-        weekDisplay.textContent = calculateWeekRange(weekIndex);
-      };
-
+      const updateWeekDisplay = () => weekDisplay.textContent = calculateWeekRange(weekIndex);
       const renderLog = () => {
         weekList.innerHTML = '';
         log.forEach(entry => {
@@ -147,10 +151,7 @@
         const div = document.createElement('div');
         div.className = 'time-pair';
         div.innerHTML = `
-          <select class="day-select">
-            <option value="">-- Giorno --</option>
-            ${weekdays.map(d => `<option>${d}</option>`).join('')}
-          </select>
+          <select class="day-select"><option value="">-- Giorno --</option>${weekdays.map(d => `<option>${d}</option>`).join('')}</select>
           <input type="time"> – <input type="time">
           <button type="button" class="remove-time">✕</button>`;
         timesContainer.appendChild(div);
@@ -159,14 +160,32 @@
 
       form.addEventListener('submit', e => {
         e.preventDefault();
-        timesContainer.querySelectorAll('.time-pair').forEach(tp => {
+        const selectedDays = Array.from(document.querySelectorAll('.day-checkboxes input:checked')).map(ch => ch.value);
+        const timePairs = Array.from(timesContainer.querySelectorAll('.time-pair'));
+
+        // Validazione: per ogni giorno selezionato deve esserci almeno 1 fascia oraria corrispondente
+        const validDays = selectedDays.every(day =>
+          timePairs.some(tp => tp.querySelector('.day-select').value === day)
+        );
+
+        if (!validDays) {
+          alert('Devi inserire almeno una fascia oraria per ogni giorno selezionato.');
+          return;
+        }
+
+        timePairs.forEach(tp => {
           const day = tp.querySelector('.day-select').value;
           const start = tp.querySelectorAll('input')[0].value;
           const end = tp.querySelectorAll('input')[1].value;
+          const inStudioText = inStudioCheckbox.checked ? ' (In studio)' : '';
+          const homeText = homeCheckbox.checked ? ' (A domicilio)' : '';
           if (day && start && end) {
-            log.push(`${calculateWeekRange(weekIndex)} → ${day}: ${start}–${end}`);
+            log.push(`${calculateWeekRange(weekIndex)} → ${day}: ${start}–${end}${inStudioText}${homeText}`);
           }
         });
+
+        inStudioCheckbox.checked = false;
+        homeCheckbox.checked = false;
         weekIndex++;
         localStorage.setItem('weekCounter', weekIndex);
         localStorage.setItem('weekLog', JSON.stringify(log));
@@ -176,17 +195,25 @@
       });
 
       resetBtn.addEventListener('click', () => {
-        localStorage.removeItem('weekCounter');
-        localStorage.removeItem('weekLog');
-        weekIndex = getCurrentWeekIndex();
-        log = [];
-        updateWeekDisplay();
-        renderLog();
-      });
+  localStorage.removeItem('weekCounter');
+  localStorage.removeItem('weekLog');
+  weekIndex = getCurrentWeekIndex();
+  log = [];
+  updateWeekDisplay();
+  renderLog();
+
+  // ✅ Reset form UI
+  document.querySelectorAll('.day-checkboxes input').forEach(ch => ch.checked = false);
+  inStudioCheckbox.checked = false;
+  homeCheckbox.checked = false;
+  timesContainer.innerHTML = '';
+});
+
 
       updateWeekDisplay();
       renderLog();
     });
   </script>
+
 </body>
 </html>
