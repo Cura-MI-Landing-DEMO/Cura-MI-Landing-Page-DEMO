@@ -699,6 +699,23 @@
       margin-bottom: 30px;
       text-align: center;
     }
+
+
+
+
+.sidebar a {
+  color: white;
+  text-decoration: none;
+  display: block;
+  padding: 10px 0;
+  font-size: 16px;
+}
+
+.sidebar a.active {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
     
       
     

@@ -1,200 +1,188 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard Operatore - Cura‑MI</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Operatore – Cura‑MI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
   <link rel="stylesheet" href="dashboardoperatore.css"/>
- 
+  <style>
+    body { overflow-x: hidden; }
+
+    .pending-widget {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+      margin-bottom: 30px;
+    }
+    .pending-card {
+      background: #eefafa;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 140px;
+    }
+    .pending-card h4 { margin: 0 0 8px; font-size: 16px; color: #139395; }
+    .card-detail { font-size: 13px; margin-bottom: 8px; color: #394e65; }
+    .card-actions { display: flex; justify-content: space-between; gap: 4px; }
+    .btn-op {
+      flex: 1;
+      padding: 6px;
+      font-size: 13px;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .accept-btn { background: #28a745; }
+    .reject-btn { background: #dc3545; }
+
+    .contact-icons { right: 10px; }
+  </style>
 </head>
 <body>
-  <div class="demo-banner" role="status" aria-live="polite" aria-hidden="false">
-    <button class="demo-close" id="demoClose" aria-label="Chiudi avviso">
-      <i class="fa-solid fa-xmark"></i>
-    </button>
-    ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
-    <strong>Cura-mi</strong> è in fase di costruzione, ma puoi già dirci la tua <br>
-    Rilascio previsto: <strong>2026</strong>. Provala Subito!
+  <div class="demo-banner" role="status">
+    <button class="demo-close" id="demoClose"><i class="fa-solid fa-xmark"></i></button>
+    ⚠️ Questa è una <strong>DEMO interattiva</strong>. Nessun dato reale viene raccolto. Provala Subito!
   </div>
-  
+
   <div class="dashboard">
     <aside class="sidebar">
       <img class="logo" src="images/logocurami.png" alt="Logo Cura‑MI">
-      <h2>DEMO - Operatore</h2>
+      <h2>DEMO – Operatore</h2>
       <a class="operator-id">Tessera: <strong>123456</strong></a>
-      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i>Home Cura‑MI</a>
-      <a href="disponibilitaoperatore.html"><i class="fa-solid fa-calendar-day"></i> Disponibilità</a>
-      <a href="prenotazioni.html" class="nav-item active"><i class="fa-solid fa-handshake-angle"></i> Prenotazioni gestite</a>
-      <a href="pagamenti.html"><i class="fa-solid fa-credit-card"></i> Pagamenti</a>
+      <a href="dashboardoperatore.html" class="nav-item active"><i class="fa-solid fa-calendar-day"></i> Home - Cura-MI</a>
+      <a href="disponibilitaoperatore.html"><i class="fa-solid fa-handshake-angle"></i> Disponibilità</a>
+      <a href="dashboardoperatore.html">Prenotazioni in attesa</a>
+      <a href="pagamenti.html" class="nav-item">Pagamenti</a>
     </aside>
 
     <main class="main-dashboard">
-      <h1>Benvenuto, [Nome Operatore]</h1>
-      <button class="reset-btn" onclick="resetPrenotazioni()">🔄 Reset DEMO Prenotazioni</button>
+      <h1>Benvenuto, 123456</h1>
+      <button class="reset-btn" onclick="resetPrenotazioni()">🔄 Reset prenotazioni demo</button>
+
       <div class="cards-row">
-        <div class="card"><h3>Prossima prenotazione</h3><p>25 Agosto, 10:00</p></div>
-        <div class="card"><h3>Totale prenotazioni</h3><p>12 nel mese</p></div>
-        <div class="card"><h3>Utenti attivi</h3><p>7 pazienti</p></div>
+        <div class="card"><h3>Prossima prenotazione</h3><p id="nextBooking">—</p></div>
+        <div class="card"><h3>Totale prenotazioni</h3><p id="totalBookings">0</p></div>
+        <div class="card"><h3>Utenti attivi</h3><p id="activeUsers">0</p></div>
       </div>
 
-      <section class="appointments">
-        <h2>Prenotazioni in attesa</h2>
-        <div class="table-scroll">
-          <table id="pendingTable">
-            <thead>
-              <tr><th>Data</th><th>Servizio</th><th>Utente</th><th>Pagamento</th><th>Azione</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>22/08/2025</td><td>Infermiere</td><td>Mario Rossi</td><td>Da verificare</td>
-                <td><button class="btn-accept">Accetta</button> <button class="btn-reject">Rifiuta</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      
-
+      <section class="pending-widget" id="pendingWidget"></section>
 
       <section class="chart-section">
         <h2>Statistiche orari disponibili</h2>
         <canvas id="availabilityChart" width="300" height="180"></canvas>
       </section>
-
-      
-      <div class="widget confirmed-widget">
-        <h3>Prenotazioni gestite: <span id="managedCount">0</span></h3>
-      </div>
     </main>
   </div>
 
   <div class="contact-icons">
-    <a href="tel:+393331234567" class="icon-btn call" aria-label="Chiama">
-      <i class="fa-solid fa-phone"></i>
-    </a>
-    <a href="https://wa.me/393331234567" target="_blank" class="icon-btn whatsapp" aria-label="WhatsApp">
-      <i class="fa-brands fa-whatsapp"></i>
-    </a>
+    <a href="tel:+393331234567" class="icon-btn call"><i class="fa-solid fa-phone"></i></a>
+    <a href="https://wa.me/393331234567" target="_blank" class="icon-btn whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
   </div>
 
   <footer class="footer glass-footer">
     <div class="footer-content">
-      <div class="footer-left">
-        <a href="#">© 2025 Cura‑MI - info@cura‑mi.it</a>
-      </div>
-      <div class="footer-center">
-        <p class="demo-text">
-          ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
-          <strong>Cura‑mi</strong> è in fase di costruzione, ma puoi già dirci la tua<br>
-          Rilascio previsto: <strong>2026</strong>.
-        </p>
-      </div>
-      <div class="footer-right">
-        <a href="#">Privacy</a>
-      </div>
+      <div class="footer-left"><a href="#">© 2025 Cura‑MI</a></div>
+      <div class="footer-center"><p class="demo-text">Demo interattiva – dati fittizi. Provala Subito!</p></div>
+      <div class="footer-right"><a href="#">Privacy</a></div>
     </div>
   </footer>
 
-  <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     new Chart(document.getElementById('availabilityChart'), {
-      type: 'bar',
-      data: {
-        labels: ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'],
-        datasets: [{
-          label: 'Ore disponibili',
-          data: [5,6,4,5,7,3,2],
-          backgroundColor: '#FDC043'
-        }]
-      },
-      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+      type:'bar',
+      data:{labels:['Lun','Mar','Mer','Gio','Ven','Sab','Dom'], datasets:[{data:[5,6,4,5,7,3,2], backgroundColor:'#FDC043'}]},
+      options:{responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}}}
     });
-  </script>
 
-  <script>
     (function(){
-      const pending = document.getElementById('pendingTable'),
-            managedCount = document.getElementById('managedCount'),
-            STORAGE_KEY = 'handledBookings';
+      const widget = document.getElementById('pendingWidget'),
+            KEY_PENDING = 'pendingBookings',
+            KEY_HANDLED = 'handledBookings',
+            KEY_PAY = 'payments';
+      const elNext = document.getElementById('nextBooking'),
+            elTotal = document.getElementById('totalBookings'),
+            elActive = document.getElementById('activeUsers');
 
-      const updateCount = () => {
-        const arr = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        managedCount.textContent = arr.length;
+      function loadDefaults(){
+        if (!localStorage.getItem(KEY_PENDING)) {
+          const defaults = [
+            {date:'22/08/2025', service:'Infermiere', user:'Mario Rossi'},
+            {date:'24/08/2025', service:'Fisioterapia', user:'Lucia Bianchi'},
+            {date:'26/08/2025', service:'OSS', user:'Giuseppe Verdi'}
+          ];
+          localStorage.setItem(KEY_PENDING, JSON.stringify(defaults));
+        }
+      }
+
+      function renderCards(){
+        const list = JSON.parse(localStorage.getItem(KEY_PENDING) || '[]');
+        widget.innerHTML = '';
+        list.forEach((b,i) => {
+          const c = document.createElement('div');
+          c.className = 'pending-card';
+          c.innerHTML = `
+            <h4>${b.date}</h4>
+            <div class="card-detail">${b.service}</div>
+            <div class="card-detail">${b.user}</div>
+            <div class="card-actions">
+              <button class="btn-op accept-btn" data-i="${i}">✔</button>
+              <button class="btn-op reject-btn" data-i="${i}">✖</button>
+            </div>`;
+          widget.appendChild(c);
+        });
+        updateStats();
+      }
+
+      function updateStats(){
+        const pending = JSON.parse(localStorage.getItem(KEY_PENDING)||'[]'),
+              handled = JSON.parse(localStorage.getItem(KEY_HANDLED)||'[]');
+        elTotal.textContent = pending.length + handled.length;
+        elActive.textContent = handled.length;
+        elNext.textContent = pending[0]?.date || '—';
+      }
+
+      widget.onclick = e => {
+        if (!e.target.matches('.btn-op')) return;
+        const idx = e.target.dataset.i;
+        const list = JSON.parse(localStorage.getItem(KEY_PENDING) || '[]');
+        const b = list.splice(idx,1)[0];
+        b.status = e.target.classList.contains('accept-btn') ? 'Confermato' : 'Rifiutata';
+        localStorage.setItem(KEY_PENDING, JSON.stringify(list));
+
+        const handled = JSON.parse(localStorage.getItem(KEY_HANDLED) || '[]');
+        handled.push(b);
+        localStorage.setItem(KEY_HANDLED, JSON.stringify(handled));
+
+        const method = prompt('Metodo pagamento: "Online" o "Contanti"?', 'Online') || 'Online';
+        const pays = JSON.parse(localStorage.getItem(KEY_PAY) || '[]');
+        pays.push({ date:b.date, user:b.user, method, amount:'€20' });
+        localStorage.setItem(KEY_PAY, JSON.stringify(pays));
+
+        renderCards();
       };
-      updateCount();
 
-      pending.addEventListener('click', e => {
-        if (!e.target.classList.contains('btn-accept') && !e.target.classList.contains('btn-reject')) return;
-        const isAccept = e.target.classList.contains('btn-accept');
-        const row = e.target.closest('tr');
-        const [date, service, user, paymentCell] = Array.from(row.querySelectorAll('td'));
-        const status = isAccept ? 'Confermato' : 'Rifiutata';
-        const booking = { date: date.textContent, service: service.textContent, user: user.textContent, status };
-        const arr = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-        arr.push(booking);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-        row.remove();
-        updateCount();
-        window.location.href = 'prenotazioni.html';
-      });
+      window.resetPrenotazioni = () => {
+        if(confirm("Resettare dati demo?")) {
+          localStorage.removeItem(KEY_PENDING);
+          localStorage.removeItem(KEY_HANDLED);
+          localStorage.removeItem(KEY_PAY);
+          location.reload();
+        }
+      };
+
+      document.getElementById('demoClose').onclick = () => {
+        document.querySelector('.demo-banner').style.display = 'none';
+      };
+
+      loadDefaults();
+      renderCards();
     })();
-
-    function resetPrenotazioni() {
-  if (confirm("Sei sicuro di voler resettare tutte le prenotazioni gestite?")) {
-    localStorage.removeItem('handledBookings');
-    location.reload();
-  }
-}
-
-document.getElementById("demoClose").addEventListener("click", () => {
-  document.querySelector(".demo-banner").style.display = "none";
-});
-
-(function(){
-    const pending = document.getElementById('pendingTable'),
-          managedCount = document.getElementById('managedCount'),
-          STORAGE_KEY = 'handledBookings',
-          PAYMENTS_KEY = 'payments';
-
-    const updateCount = () => {
-      const arr = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-      managedCount.textContent = arr.length;
-    };
-    updateCount();
-
-    pending.addEventListener('click', e => {
-      if (!e.target.classList.contains('btn-accept')) return;
-      const isAccept = e.target.classList.contains('btn-accept');
-      const row = e.target.closest('tr');
-      const [date, service, user] = Array.from(row.querySelectorAll('td')).slice(0,3).map(td => td.textContent);
-      const status = 'Confermato';
-
-      // Prompt per scegliere metodo di pagamento
-      let method = prompt('Seleziona metodo di pagamento: "Online" o "Contanti"');
-      method = method === 'Contanti' ? 'Contanti' : 'Online';
-
-      // Aggiunta al log delle prenotazioni gestite
-      const booking = { date, service, user, status };
-      const arr = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-      arr.push(booking);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
-
-      // Generazione pagamento automatico
-      const amount = prompt(`Inserisci l'importo del pagamento per ${user} (${method}):`, '€');
-      const pay = { date, amount, user, method };
-      const payArr = JSON.parse(localStorage.getItem(PAYMENTS_KEY) || '[]');
-      payArr.push(pay);
-      localStorage.setItem(PAYMENTS_KEY, JSON.stringify(payArr));
-
-      row.remove();
-      updateCount();
-      window.location.href = 'pagamenti.html';
-    });
-  })();
-
   </script>
 </body>
 </html>

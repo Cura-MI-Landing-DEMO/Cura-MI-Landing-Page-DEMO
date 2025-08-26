@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Operatore – Cura‑MI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    :root {
+      --teal: #139395;
+      --gold: #FDC043;
+      --slate: #394e65;
+      --bg: #f0f2f5;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      font-family: Arial, sans-serif;
+      color: var(--slate);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 360px;
+      width: 100%;
+    }
+    .login-container img {
+      height: 60px;
+      margin-bottom: 20px;
+    }
+    .login-container h2 {
+      margin-bottom: 8px;
+      color: var(--teal);
+    }
+    .login-container p {
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: var(--slate);
+    }
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      background: var(--teal);
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .login-container button:hover {
+      background: #117a75;
+    }
+    .error { color: red; margin-bottom: 12px; display: none; }
+
+    .demo-banner-top {
+  background: #FDC043;
+  color: #394e65;
+  padding: 14px 20px;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.highlight {
+  color: #139395;
+  font-weight: bold;
+}
+
+  </style>
+</head>
+<body>
+    <div class="demo-banner-top">
+        ⚠️ Questa è una<strong>DEMO dimostrativa</strong> – Non vengono raccolti dati sensibili. Vogliamo farvi vedere e provare cosa sarà <strong>Cura‑MI</strong>
+        <strong>Cura‑mi</strong> è in fase di costruzione, ma puoi già dirci la tua<br>
+        <span class="highlight">Provalo subito!</span> Clicca su <strong>Accedi</strong>.
+      </div>
+
+     
+  <div class="login-container">
+    <img src="images/logocurami.png" alt="Logo Cura‑MI">
+    <h2>Accesso Operatore</h2>
+    <p>Inserisci numero tessera e password</p>
+    <div class="error" id="errorMsg">Credenziali errate</div>
+    <input type="text" id="user" placeholder="123456" autocomplete="username">
+    <input type="password" id="pass" placeholder="123456" autocomplete="current-password">
+    <button onclick="login()">Accedi</button>
+  </div>
+
+  <script>
+    function login() {
+      const user = document.getElementById('user').value.trim();
+      const pass = document.getElementById('pass').value.trim();
+      if (user === '123456' && pass === '123456') {
+        localStorage.setItem('operatorName', 'Mario');
+        window.location.href = 'dashboardoperatore.html';
+      } else {
+        const err = document.getElementById('errorMsg');
+        err.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>
