@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Operatore - Cura‑MI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="dashboardoperatore.css"/>
+ 
+</head>
+<body>
+  <div class="demo-banner" role="status" aria-live="polite" aria-hidden="false">
+    <button class="demo-close" id="demoClose" aria-label="Chiudi avviso">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+    ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+    <strong>Cura-mi</strong> è in fase di costruzione, ma puoi già dirci la tua <br>
+    Rilascio previsto: <strong>2026</strong>. Provala Subito!
+  </div>
+  
+  <div class="dashboard">
+    <aside class="sidebar">
+      <h2>👩‍⚕️ DEMO - Cura‑MI</h2>
+      <a href="index.html" class="nav-item"><i class="fa-solid fa-house"></i>Home Cura‑MI</a>
+      <a href="disponibilitaoperatore.html"><i class="fa-solid fa-calendar-day"></i> Disponibilità</a>
+      <a href="prenotazioni.html" class="nav-item active"><i class="fa-solid fa-handshake-angle"></i> Prenotazioni gestite</a>
+      <a href="pagamenti.html"><i class="fa-solid fa-credit-card"></i> Pagamenti</a>
+    </aside>
+
+    <section class="conferme-widget">
+        <h2>Conferme Recenti</h2>
+        <div class="conferme-list">
+          <div class="item">
+            Mario Rossi — 25/08/2025
+            <button onclick="openChat()">Chat</button>
+          </div>
+        </div>
+      </section>
+    
+      <div class="chat-button-container">
+        <button class="chat-toggle" onclick="toggleChat()">
+          <i class="fa-solid fa-comments"></i>
+          <span class="badge" id="chatBadge">!</span>
+        </button>
+      </div>
+    
+      <div class="chat-widget" id="chatWidget">
+        <div class="chat-header">
+          <span>Chat con Mario Rossi</span>
+          <button onclick="toggleChat()">✕</button>
+        </div>
+        <div class="chat-content" id="chatContent">
+          <p><strong>Mario:</strong> Buongiorno, sono in ritardo.</p>
+        </div>
+        <div class="chat-controls">
+          <input type="text"/>
+          <button onclick="callClient()"><i class="fa-solid fa-phone"></i></button>
+          <button onclick="sendMessage()">Invia</button>
+        </div>
+      </div>
+
+      <div class="contact-icons">
+        <a href="tel:+393331234567" class="icon-btn call" aria-label="Chiama">
+          <i class="fa-solid fa-phone"></i>
+        </a>
+        <a href="https://wa.me/393331234567" target="_blank" class="icon-btn whatsapp" aria-label="WhatsApp">
+          <i class="fa-brands fa-whatsapp"></i>
+        </a>
+      </div>
+    
+      <footer class="footer glass-footer">
+        <div class="footer-content">
+          <div class="footer-left">
+            <a href="#">© 2025 Cura‑MI - info@cura‑mi.it</a>
+          </div>
+          <div class="footer-center">
+            <p class="demo-text">
+              ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+              <strong>Cura‑mi</strong> è in fase di costruzione, ma puoi già dirci la tua<br>
+              Rilascio previsto: <strong>2026</strong>.
+            </p>
+          </div>
+          <div class="footer-right">
+            <a href="#">Privacy</a>
+          </div>
+        </div>
+      </footer>
+
+      <script>
+        let unread = 1;
+    
+        function openChat() {
+          document.getElementById('chatWidget').style.display = 'flex';
+          unread = 0;
+          updateBadge();
+        }
+    
+        function toggleChat() {
+          const w = document.getElementById('chatWidget');
+          w.style.display = (w.style.display === 'flex') ? 'none' : 'flex';
+          if (w.style.display === 'flex') {
+            unread = 0;
+            updateBadge();
+          }
+        }
+    
+        function updateBadge() {
+          const badge = document.getElementById('chatBadge');
+          badge.style.display = unread > 0 ? 'flex' : 'none';
+          badge.textContent = unread;
+        }
+    
+        function callClient() {
+          alert("Avvio chiamata in corso...");
+        }
+    
+        function sendMessage() {
+          const content = document.getElementById('chatContent');
+          const msg = document.createElement('p');
+          msg.innerHTML = "<strong>Operatore:</strong> La contatto a breve.";
+          content.appendChild(msg);
+          content.scrollTop = content.scrollHeight;
+        }
+      </script>
