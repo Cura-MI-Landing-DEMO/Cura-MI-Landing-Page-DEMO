@@ -1,125 +1,173 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login Operatore – Cura‑MI</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-  <style>
-    :root {
-      --teal: #139395;
-      --gold: #FDC043;
-      --slate: #394e65;
-      --bg: #f0f2f5;
-    }
-    body {
-      margin: 0;
-      background: var(--bg);
-      font-family: Arial, sans-serif;
-      color: var(--slate);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .login-container {
-      background: white;
-      padding: 40px 30px;
-      border-radius: 12px;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-      text-align: center;
-      max-width: 360px;
-      width: 100%;
-    }
-    .login-container img {
-      height: 60px;
-      margin-bottom: 20px;
-    }
-    .login-container h2 {
-      margin-bottom: 8px;
-      color: var(--teal);
-    }
-    .login-container p {
-      margin-bottom: 24px;
-      font-size: 14px;
-      color: var(--slate);
-    }
-    .login-container input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-    .login-container button {
-      width: 100%;
-      padding: 12px;
-      background: var(--teal);
-      border: none;
-      color: white;
-      font-size: 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .login-container button:hover {
-      background: #117a75;
-    }
-    .error { color: red; margin-bottom: 12px; display: none; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Login Operatore – Cura‑MI</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+<style>
+  :root { --teal:#139395; --gold:#FDC043; --slate:#394e65; --bg:#f0f2f5; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background:var(--bg);
+    font-family:Arial,sans-serif;
+    color:var(--slate);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    overflow:hidden;
+    padding:20px;
+  }
+  .demo-banner-top {
+    background:var(--gold);
+    color:var(--slate);
+    padding:14px 20px;
+    text-align:center;
+    position:absolute;
+    top:0; left:0; right:0;
+    z-index:1000;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  }
+  .highlight { color:var(--teal); font-weight:bold; }
 
-    .demo-banner-top {
-  background: #FDC043;
-  color: #394e65;
-  padding: 14px 20px;
-  font-size: 15px;
-  font-weight: bold;
-  text-align: center;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-}
+  /* Container principale */
+  .container {
+    position: relative;
+    max-width:360px;
+    width:100%;
+  }
 
-.highlight {
-  color: #139395;
-  font-weight: bold;
-}
+  /* Login form */
+  .login-container {
+    background:white;
+    padding:40px 30px;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.1);
+    text-align:center;
+    position:relative;
+    z-index:10;
+  }
+  .login-container img { height:60px; margin-bottom:20px; }
+  .login-container h2 { margin-bottom:8px; color:var(--teal); }
+  .login-container p { margin-bottom:24px; font-size:14px; }
+  .login-container input {
+    width:100%; padding:12px; margin-bottom:16px;
+    border:1px solid #ccc; border-radius:6px; font-size:14px;
+  }
+  .login-container button {
+    width:100%; padding:12px;
+    background:var(--teal); border:none; color:white;
+    font-size:16px; border-radius:6px; cursor:pointer;
+    font-weight:bold;
+  }
+  .login-container button:hover { background:#117a75; }
+  .error { color:red; margin-bottom:12px; display:none; }
 
-  </style>
+  /* Immagini sparse */
+  .floating-img {
+    position:absolute;
+    width:80px; height:auto;
+    border-radius:8px;
+    object-fit:cover;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+    opacity:0.9;
+    transition: transform 0.3s;
+  }
+  .floating-img:hover { transform: scale(1.05); }
+
+  /* Posizionamenti responsive */
+  .img1 { top:-20px; left:-20px; }
+  .img2 { top:-20px; right:-20px; }
+  .img3 { bottom:-20px; left:-20px; }
+  .img4 { bottom:-20px; right:-20px; }
+
+  @media(max-width:480px) {
+    .floating-img { display:none; }
+  }
+
+  /* Pop-up centrale */
+  .popup-overlay {
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.6);
+    display:flex; align-items:center;
+    justify-content:center; z-index:1500;
+    opacity:0; pointer-events:none;
+    transition: opacity 0.3s ease;
+  }
+  .popup-overlay.active {
+    opacity:1; pointer-events:all;
+  }
+  .popup {
+    background:white;
+    padding:24px 28px;
+    border-radius:10px;
+    max-width:90%;
+    text-align:center;
+    box-shadow:0 4px 20px rgba(0,0,0,0.2);
+  }
+  .popup h3 { margin-bottom:12px; color:var(--teal); }
+  .popup p { font-size:14px; color:var(--slate); margin-bottom:16px; }
+  .popup button {
+    padding:8px 16px; background:var(--gold);
+    color:var(--slate); border:none; border-radius:6px;
+    cursor:pointer; font-weight:bold;
+  }
+</style>
 </head>
 <body>
-    <div class="demo-banner-top">
-        ⚠️ Questa è una<strong>DEMO dimostrativa</strong> – Non vengono raccolti dati sensibili. Vogliamo farvi vedere e provare cosa sarà <strong>Cura‑MI</strong>
-        <strong>Cura‑mi</strong> è in fase di costruzione, ma puoi già dirci la tua<br>
-        <span class="highlight">Provalo subito!</span> Clicca su <strong>Accedi</strong>.
-      </div>
+  <div class="demo-banner-top">
+    ⚠️ Questa è una <strong>DEMO dimostrativa</strong> – Non vengono raccolti dati sensibili. Vogliamo farvi vedere e provare cosa sarà <strong>Cura‑MI</strong>.<br>
+    <span class="highlight">Provalo subito! Clicca su <strong>Accedi</strong>.</span>
+  </div>
 
-     
-  <div class="login-container">
-    <img src="images/logocurami.png" alt="Logo Cura‑MI">
-    <h2>Accesso Operatore</h2>
-    <p>Inserisci numero tessera e password</p>
-    <div class="error" id="errorMsg">Credenziali errate</div>
-    <input type="text" id="user" placeholder="123456" autocomplete="username">
-    <input type="password" id="pass" placeholder="123456" autocomplete="current-password">
-    <button onclick="login()">Accedi</button>
+  <div class="container">
+    <img src="images/fotounologin.jpg" alt="Operatore 1" class="floating-img img1">
+    <img src="images/fotoduelogin.jpg" alt="Operatore 2" class="floating-img img2">
+    
+    <div class="login-container">
+      <img src="images/logocurami.png" alt="Logo Cura‑MI">
+      <h2>Accesso Operatore</h2>
+      <p>Inserisci numero tessera e password per accedere</p>
+      <div class="error" id="errorMsg">Credenziali errate</div>
+      <input type="text" id="user" placeholder="123456" autocomplete="username">
+      <input type="password" id="pass" placeholder="123456" autocomplete="current-password">
+      <button onclick="login()">Accedi</button>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="demoPopup">
+    <div class="popup">
+      <h3>Come usare questa DEMO</h3>
+      <p>E' una DEMO dimostrativa che non raccoglie in alcun modo i dati, nomi importi username e password sono fittizie. Accedi con le credenziali fornite e prova queste funzionalità:<br>
+        
+         • <strong>Username: 123456/ Password: 123456</strong><br>
+         • Accetta/Rifiuta prenotazioni<br>
+         • Ogni richiesta accettata verra portata in pagamento e in lista prenotazioni</p>
+         • anche rifiutando la richiesta viene portata in lista prenotazioni categoria rifiutata<br>
+         • al termine di ogni sessione sulla pagina vi chiediamo un click sul tasto giallo, per permettere a tutti di usarla<br><br>
+         <strong>GRAZIE!!! Aspettiamo i vostri feedback</strong> <br>
+
+         
+      <button onclick="document.getElementById('demoPopup').classList.remove('active')">Ho capito!</button>
+    </div>
   </div>
 
   <script>
-    function login() {
+    function login(){
       const user = document.getElementById('user').value.trim();
       const pass = document.getElementById('pass').value.trim();
-      if (user === '123456' && pass === '123456') {
-        localStorage.setItem('operatorName', 'Mario');
-        window.location.href = 'dashboardoperatore.html';
+      if(user==='123456' && pass==='123456'){
+        localStorage.setItem('operatorName','Mario');
+        window.location.href='dashboardoperatore.html';
       } else {
-        const err = document.getElementById('errorMsg');
-        err.style.display = 'block';
+        document.getElementById('errorMsg').style.display='block';
       }
     }
+    window.addEventListener('DOMContentLoaded', ()=>{
+      setTimeout(()=>document.getElementById('demoPopup').classList.add('active'), 500);
+    });
   </script>
 </body>
 </html>
