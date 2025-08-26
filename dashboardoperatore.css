@@ -716,6 +716,24 @@
   border-radius: 4px;
 }
 
+
+/* Elimina overflow orizzontale indesiderato */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Assicura che il contenitore principale non superi la larghezza della finestra */
+.main-dashboard {
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Ridimensiona le card nel widget per evitare overflow */
+.pending-widget {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) !important;
+  overflow-x: hidden;
+}
     
       
     
