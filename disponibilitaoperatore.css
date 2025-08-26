@@ -347,3 +347,19 @@ body {
   accent-color: var(--teal);
 }
 
+@media (max-width: 768px) {
+  .time-pair {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .time-pair select,
+  .time-pair input {
+    width: 100%;
+  }
+
+  #addTime {
+    width: 100%;
+  }
+}
+

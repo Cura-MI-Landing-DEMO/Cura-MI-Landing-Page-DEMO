@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prenotazioni Gestite – Cura‑MI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <link rel="stylesheet" href="dashboardoperatore.css"/>
+</head>
+<body>
+  <!-- Banner DEMO -->
+  <div class="demo-banner">
+    <button class="demo-close">&times;</button>
+    ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+    <strong>Cura-mi</strong> è in costruzione. Rilascio previsto: <strong>2026</strong>. Provala Subito!
+  </div>
+
+
+
+  <div class="dashboard">
+    <aside class="sidebar">
+        <button class="reset-btn" onclick="resetPrenotazioni()">🔄 Reset DEMO Prenotazioni</button>
+      <h2>👩‍⚕️ DEMO - Cura‑MI</h2>
+      <a href="dashboardoperatore.html" class="nav-item"><i class="fa-solid fa-house"></i>Home - Dashboard</a>
+      <a href="disponibilitaoperatore.html"><i class="fa-solid fa-calendar-day"></i> Disponibilità</a>
+      <a href="dashboardoperatore.html" class="nav-item"><i class="fa-solid fa-handshake-angle"></i> In attesa</a>
+      
+    </aside>
+
+    <main class="main-dashboard">
+      <h1>Prenotazioni Gestite</h1>
+
+      <section>
+        <h2>Prenotazioni Confermate</h2>
+        <div class="table-scroll">
+          <table id="confirmedTable">
+            <thead><tr><th>Data</th><th>Servizio</th><th>Utente</th><th>Stato</th><th>Chat</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Prenotazioni Rifiutate</h2>
+        <div class="table-scroll">
+          <table id="rejectedTable">
+            <thead><tr><th>Data</th><th>Servizio</th><th>Utente</th><th>Stato</th><th>Note</th><th>Chat</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="widgets">
+        <div class="widget-box"><h3>Totale Confermate: <span id="countConfirmed">0</span></h3></div>
+        <div class="widget-box"><h3>Totale Rifiutate: <span id="countRejected">0</span></h3></div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Chat Popup -->
+  <div class="chat-popup" id="chatPopup">
+    <div class="chat-header">Chat con utente <button onclick="toggleChat()" style="background:transparent;border:none;color:white;float:right;">×</button></div>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-input">
+      <textarea id="chatMsg" rows="1" placeholder="Scrivi..."></textarea>
+      <button onclick="sendMsg()">Invia</button>
+    </div>
+  </div>
+
+  <script>
+    // Banner close
+    document.querySelector('.demo-close').addEventListener('click', () => {
+      document.querySelector('.demo-banner').style.display = 'none';
+    });
+
+    // Reset
+    function resetPrenotazioni() {
+      if (confirm("Resettare tutte le prenotazioni gestite?")) {
+        localStorage.removeItem('handledBookings');
+        location.reload();
+      }
+    }
+
+    // Populate tables and handle chat icon
+    (function(){
+      const arr = JSON.parse(localStorage.getItem('handledBookings') || '[]');
+      const ctb = document.querySelector('#confirmedTable tbody');
+      const rtb = document.querySelector('#rejectedTable tbody');
+      let cc = 0, rc = 0;
+
+      arr.forEach(e => {
+        const tr = document.createElement('tr');
+        const chatBtn = `<td><i class="fa-solid fa-comment" style="cursor:pointer" onclick="openChat('${e.user}')"></i></td>`;
+        if (e.status === 'Confermato') {
+          cc++;
+          tr.innerHTML = `<td>${e.date}</td><td>${e.service}</td><td>${e.user}</td><td>${e.status}</td>` + chatBtn;
+          ctb.appendChild(tr);
+        } else if (e.status === 'Rifiutata') {
+          rc++;
+          tr.innerHTML = `<td>${e.date}</td><td>${e.service}</td><td>${e.user}</td><td>${e.status}</td>` +
+                         `<td contenteditable="true" placeholder="Note..."></td>` + chatBtn;
+          rtb.appendChild(tr);
+        }
+      });
+      document.getElementById('countConfirmed').textContent = cc;
+      document.getElementById('countRejected').textContent = rc;
+    })();
+
+    // Chat popup logic
+    function openChat(user) {
+      document.getElementById('chatBody').innerHTML = `<div><em>Chat simulata con ${user}</em></div>`;
+      document.getElementById('chatPopup').style.display = 'block';
+    }
+    function toggleChat() {
+      const pop = document.getElementById('chatPopup');
+      pop.style.display = pop.style.display === 'block' ? 'none' : 'block';
+    }
+    function sendMsg() {
+      const msg = document.getElementById('chatMsg').value.trim();
+      if (!msg) return;
+      const body = document.getElementById('chatBody');
+      const div = document.createElement('div');
+      div.textContent = `Tu: ${msg}`;
+      body.appendChild(div);
+      document.getElementById('chatMsg').value = '';
+      body.scrollTop = body.scrollHeight;
+    }
+  </script>
+</body>
+</html>

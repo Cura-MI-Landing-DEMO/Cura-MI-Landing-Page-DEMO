@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pagamenti – Cura‑MI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <link rel="stylesheet" href="dashboardoperatore.css"/>
+
+</head>
+<body>
+  <!-- Banner DEMO -->
+  <div class="demo-banner">
+    <button class="demo-close">&times;</button>
+    ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+    <strong>Cura‑mi</strong> è in costruzione. Rilascio previsto: <strong>2026</strong>. Provala Subito!
+  </div>
+
+  
+
+  <div class="dashboard">
+    <aside class="sidebar">
+        <button class="reset-btn" onclick="resetPagamenti()">🔄 Reset DEMO Pagamenti</button>
+      <h2>💳 DEMO - Cura‑MI</h2>
+      <a href="dashboardoperatore.html" class="nav-item"><i class="fa-solid fa-house"></i>Home - Dashboard</a>
+      <a href="disponibilitaoperatore.html"><i class="fa-solid fa-calendar-day"></i> Disponibilità</a>
+      <a href="prenotazioni.html" class="nav-item active"><i class="fa-solid fa-handshake-angle"></i> Prenotazioni gestite</a>
+    </aside>
+
+    <main class="main-dashboard">
+      <h1>Pagamenti Effettuati</h1>
+
+      <div class="widgets">
+        <div class="widget-box">
+          <h3>Online: <span id="countOnline">0</span></h3>
+        </div>
+        <div class="widget-box">
+          <h3>Contanti: <span id="countCash">0</span></h3>
+        </div>
+      </div>
+
+      <section>
+        <h2>Pagamenti Online</h2>
+        <div class="table-scroll">
+          <table id="onlineTable">
+            <thead><tr><th>Data</th><th>Importo</th><th>Utente</th><th>Metodo</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2>Pagamenti in Contanti</h2>
+        <div class="table-scroll">
+          <table id="cashTable">
+            <thead><tr><th>Data</th><th>Importo</th><th>Utente</th><th>Metodo</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer Glassy -->
+  <footer class="footer glass-footer" role="contentinfo">
+    <div class="footer-content">
+      <div class="footer-left">
+        <a href="#">© 2025 Cura‑MI - info@cura‑mi.it</a>
+      </div>
+      <div class="footer-center">
+        <p class="demo-text">
+          ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.<br>
+          <strong>Cura‑mi</strong> è in costruzione. Rilascio previsto: <strong>2026</strong>.
+        </p>
+      </div>
+      <div class="footer-right">
+        <a href="#">Privacy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Icons -->
+  <div class="contact-icons">
+    <a href="tel:+393331234567" class="icon-btn call" aria-label="Chiama">
+      <i class="fa-solid fa-phone"></i>
+    </a>
+    <a href="https://wa.me/393331234567" target="_blank" class="icon-btn whatsapp" aria-label="WhatsApp">
+      <i class="fa-brands fa-whatsapp"></i>
+    </a>
+  </div>
+
+  <script>
+    // Banner close
+    document.querySelector('.demo-close').addEventListener('click', () => {
+      document.querySelector('.demo-banner').style.display = 'none';
+    });
+
+    // Reset payments
+    function resetPagamenti() {
+      if (confirm("Resettare tutti i pagamenti demo?")) {
+        localStorage.removeItem('payments');
+        location.reload();
+      }
+    }
+
+    // Populate payments tables
+    (function(){
+      const arr = JSON.parse(localStorage.getItem('payments') || '[]');
+      const onlineT = document.querySelector('#onlineTable tbody');
+      const cashT = document.querySelector('#cashTable tbody');
+      let onCount = 0, cashCount = 0;
+
+      arr.forEach(p => {
+        const tr = document.createElement('tr');
+        const html = `<td>${p.date}</td><td>${p.amount}</td><td>${p.user}</td><td>${p.method}</td>`;
+        if (p.method === 'Online') {
+          onCount++;
+          tr.innerHTML = html;
+          onlineT.appendChild(tr);
+        } else {
+          cashCount++;
+          tr.innerHTML = html;
+          cashT.appendChild(tr);
+        }
+      });
+
+      document.getElementById('countOnline').textContent = onCount;
+      document.getElementById('countCash').textContent = cashCount;
+    })();
+  </script>
+</body>
+</html>
