@@ -96,41 +96,48 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     new Chart(document.getElementById('availabilityChart'), {
-      type:'bar',
-      data:{labels:['Lun','Mar','Mer','Gio','Ven','Sab','Dom'], datasets:[{data:[5,6,4,5,7,3,2], backgroundColor:'#FDC043'}]},
-      options:{responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}}}
+      type: 'bar',
+      data: {
+        labels: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+        datasets: [{ data: [5,6,4,5,7,3,2], backgroundColor:'#FDC043' }]
+      },
+      options: { responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
     });
-
-    (function(){
+  
+    (function() {
       const widget = document.getElementById('pendingWidget'),
-            KEY_PENDING = 'pendingBookings',
-            KEY_HANDLED = 'handledBookings',
-            KEY_PAY = 'payments';
+        KEY_PENDING = 'pendingBookings',
+        KEY_HANDLED = 'handledBookings',
+        KEY_PAY = 'payments',
+        USER_KEY = 'userBookings';
       const elNext = document.getElementById('nextBooking'),
-            elTotal = document.getElementById('totalBookings'),
-            elActive = document.getElementById('activeUsers');
-
-      function loadDefaults(){
+        elTotal = document.getElementById('totalBookings'),
+        elActive = document.getElementById('activeUsers');
+  
+      function loadDefaults() {
         if (!localStorage.getItem(KEY_PENDING)) {
           const defaults = [
-            {date:'22/08/2025', service:'Infermiere', user:'Mario Rossi'},
-            {date:'24/08/2025', service:'Fisioterapia', user:'Lucia Bianchi'},
-            {date:'26/08/2025', service:'OSS', user:'Giuseppe Verdi'}
+            {date:'22/08/2025',service:'Infermiere',user:'Mario Rossi',time:'10:00',mode:'studio',notes:'–',status:'In attesa'},
+            {date:'24/08/2025',service:'Fisioterapia',user:'Lucia Bianchi',time:'15:00',mode:'domicilio',notes:'Riabilitazione',status:'In attesa'},
+            {date:'26/08/2025',service:'OSS',user:'Giuseppe Verdi',time:'09:00',mode:'studio',notes:'Controllo parametri',status:'In attesa'}
           ];
           localStorage.setItem(KEY_PENDING, JSON.stringify(defaults));
         }
       }
-
-      function renderCards(){
+  
+      function renderCards() {
         const list = JSON.parse(localStorage.getItem(KEY_PENDING) || '[]');
         widget.innerHTML = '';
-        list.forEach((b,i) => {
+        list.forEach((b, i) => {
           const c = document.createElement('div');
           c.className = 'pending-card';
           c.innerHTML = `
             <h4>${b.date}</h4>
-            <div class="card-detail">${b.service}</div>
-            <div class="card-detail">${b.user}</div>
+            <div class="card-detail">Servizio: ${b.service}</div>
+            <div class="card-detail">Utente: ${b.user}</div>
+            <div class="card-detail">Orario: ${b.time}</div>
+            <div class="card-detail">Modalità: ${b.mode === 'domicilio' ? 'A domicilio' : 'In studio'}</div>
+            <div class="card-detail">Note: ${b.notes || '–'}</div>
             <div class="card-actions">
               <button class="btn-op accept-btn" data-i="${i}">✔</button>
               <button class="btn-op reject-btn" data-i="${i}">✖</button>
@@ -139,51 +146,69 @@
         });
         updateStats();
       }
-
-      function updateStats(){
-        const pending = JSON.parse(localStorage.getItem(KEY_PENDING)||'[]'),
-              handled = JSON.parse(localStorage.getItem(KEY_HANDLED)||'[]');
+  
+      function updateStats() {
+        const pending = JSON.parse(localStorage.getItem(KEY_PENDING) || '[]'),
+          handled = JSON.parse(localStorage.getItem(KEY_HANDLED) || '[]');
         elTotal.textContent = pending.length + handled.length;
         elActive.textContent = handled.length;
         elNext.textContent = pending[0]?.date || '—';
       }
-
-      widget.onclick = e => {
+  
+      widget.addEventListener('click', e => {
         if (!e.target.matches('.btn-op')) return;
         const idx = e.target.dataset.i;
-        const list = JSON.parse(localStorage.getItem(KEY_PENDING) || '[]');
-        const b = list.splice(idx,1)[0];
-        b.status = e.target.classList.contains('accept-btn') ? 'Confermato' : 'Rifiutata';
-        localStorage.setItem(KEY_PENDING, JSON.stringify(list));
-
+        const pendingList = JSON.parse(localStorage.getItem(KEY_PENDING) || '[]');
+        const booking = pendingList.splice(idx, 1)[0];
+        booking.status = e.target.classList.contains('accept-btn') ? 'Confermato' : 'Rifiutata';
+        localStorage.setItem(KEY_PENDING, JSON.stringify(pendingList));
+  
         const handled = JSON.parse(localStorage.getItem(KEY_HANDLED) || '[]');
-        handled.push(b);
+        handled.push(booking);
         localStorage.setItem(KEY_HANDLED, JSON.stringify(handled));
-
+  
+        // Aggiorna stato lato utente
+        const userArr = JSON.parse(localStorage.getItem(USER_KEY) || '[]');
+        const userIndex = userArr.findIndex(ub =>
+          ub.date === booking.date &&
+          ub.service === booking.service &&
+          ub.time === booking.time &&
+          (ub.user === booking.user || booking.user === 'Utente DEMO')
+        );
+        if (userIndex > -1) {
+          userArr[userIndex].status = booking.status;
+          localStorage.setItem(USER_KEY, JSON.stringify(userArr));
+        }
+  
         const method = prompt('Metodo pagamento: "Online" o "Contanti"?', 'Online') || 'Online';
         const pays = JSON.parse(localStorage.getItem(KEY_PAY) || '[]');
-        pays.push({ date:b.date, user:b.user, method, amount:'€20' });
+        pays.push({ date: booking.date, user: booking.user, method, amount: '€20' });
         localStorage.setItem(KEY_PAY, JSON.stringify(pays));
-
+  
         renderCards();
-      };
-
+      });
+  
       window.resetPrenotazioni = () => {
-        if(confirm("Resettare dati demo?")) {
+        if (confirm("Resettare dati demo?")) {
           localStorage.removeItem(KEY_PENDING);
           localStorage.removeItem(KEY_HANDLED);
           localStorage.removeItem(KEY_PAY);
+          localStorage.removeItem(USER_KEY);
           location.reload();
         }
       };
-
+  
       document.getElementById('demoClose').onclick = () => {
         document.querySelector('.demo-banner').style.display = 'none';
       };
-
+  
       loadDefaults();
       renderCards();
     })();
   </script>
+  
+  
+
+  
 </body>
 </html>

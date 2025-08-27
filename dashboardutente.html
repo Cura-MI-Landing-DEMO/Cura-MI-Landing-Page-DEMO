@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DEMO - Dashboard Utente – Cura‑MI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <style>
+    :root {
+      --teal: #139395;
+      --gold: #FDC043;
+      --slate: #394e65;
+      --bg: #f4f6f8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--slate);
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .navbar {
+      background: var(--gold);
+      padding: 12px 20px;
+      color: white;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .navbar img {
+      height: 40px;
+    }
+    .user-nav {
+      display: flex;
+      gap: 16px;
+    }
+    .user-nav a {
+      color: white;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .user-nav a:hover {
+      text-decoration: underline;
+    }
+
+    .main-container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+    .content {
+      max-width: 500px;
+      width: 100%;
+    }
+    .booking-form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    .booking-form label { display: block; margin-bottom: 6px; font-weight: bold; }
+    .booking-form input, .booking-form select, .booking-form textarea {
+      width: 100%; padding: 8px; margin-bottom: 12px;
+      border: 1px solid #ccc; border-radius: 6px;
+      font-size: 14px;
+    }
+    .booking-form textarea { resize: vertical; height: 80px; }
+    .booking-form button {
+      background: var(--teal);
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .booking-form button:hover { background: #117a75; }
+
+    .booking-widget {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+    .booking-card {
+      background: white;
+      padding: 16px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .booking-card h4 { margin-bottom: 10px; color: var(--teal); }
+    .booking-card .detail { margin-bottom: 6px; font-size: 14px; line-height: 1.4; }
+    .status {
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 8px;
+      font-size: 14px;
+    }
+    .status.confirmed { background-color: #d4edda; color: #155724; }
+    .status.rejected { background-color: #f8d7da; color: #721c24; }
+    .status.inattesa { background-color: #fff3cd; color: #856404; }
+
+    @media (max-width: 600px) {
+      .booking-widget { grid-template-columns: 1fr; }
+    }
+
+    .floating-img {
+      position: absolute;
+      width: 80px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      opacity: 0.9;
+      transition: transform 0.3s;
+    }
+    .floating-img:hover { transform: scale(1.05); }
+    .img1 { top: 10px; left: 10px; }
+    .img2 { top: 10px; right: 10px; }
+    .img3 { bottom: 10px; left: 10px; }
+    .img4 { bottom: 10px; right: 10px; }
+    @media(max-width:480px) { .floating-img { display: none; } }
+
+    .demo-banner {
+  background: #FDC043;
+  color: #394e65;
+  text-align: center;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: bold;
+  position: relative;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.demo-banner strong {
+  color: #139395;
+}
+
+  </style>
+</head>
+<body>
+    <div class="demo-banner">
+        ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.
+      </div>
+  <div class="navbar">
+    <img src="images/logocurami.png" alt="Logo Cura‑MI">
+    <div class="user-nav">
+      <a href="#">Prenotazioni</a>
+      <a href="#">Profilo</a>
+      <a href="#">Pagamenti</a>
+      <a href="index.html">Esci</a>
+    </div>
+  </div>
+
+  <div class="main-container">
+  
+
+    <div class="content">
+      <form class="booking-form" id="bookingForm">
+        <label>Servizio</label>
+        <select id="operator" required>
+          <option value="">Seleziona...</option>
+          <option>Infermiere</option>
+          <option>OSS</option>
+          <option>Fisioterapista</option>
+          <option>Accompagnamento visite</option>
+        </select>
+        <label>Data</label>
+        <input type="date" id="date" required>
+        <label>Fascia oraria</label>
+        <input type="time" id="time" required>
+        <label>Modalità</label>
+        <select id="mode" required>
+          <option value="">Seleziona...</option>
+          <option>In studio</option>
+          <option>A domicilio</option>
+        </select>
+        <label>Note</label>
+        <textarea id="notes" placeholder="Dettagli aggiuntivi..."></textarea>
+        <button type="submit">Prenota</button>
+      </form>
+
+      <div>
+        Totale prenotazioni: <span id="totalCount">0</span>
+      </div>
+
+      <section class="booking-widget" id="bookingWidget"></section>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('bookingForm');
+    const widget = document.getElementById('bookingWidget');
+    const totalCountEl = document.getElementById('totalCount');
+    const STORAGE_KEY = 'userBookings';
+    const OPERATOR_KEY = 'pendingBookings';
+
+    function renderBookings() {
+      const list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      widget.innerHTML = '';
+      totalCountEl.textContent = list.length;
+      list.forEach(b => {
+        const card = document.createElement('div');
+        card.className = 'booking-card';
+        card.innerHTML = `
+          <h4>${b.service}</h4>
+          <div class="detail">Data: ${b.date}</div>
+          <div class="detail">Orario: ${b.time}</div>
+          <div class="detail">${b.mode === 'studio' ? 'In studio' : 'A domicilio'}</div>
+          <div class="detail">Note: ${b.notes || '–'}</div>
+          <div class="status ${b.status === 'Confermato' ? 'confirmed' : b.status === 'Rifiutata' ? 'rejected' : 'inattesa'}">${b.status}</div>`;
+        widget.appendChild(card);
+      });
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const booking = {
+        service: document.getElementById('operator').value,
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        mode: document.getElementById('mode').value === 'In studio' ? 'studio' : 'domicilio',
+        notes: document.getElementById('notes').value.trim(),
+        status: 'In attesa'
+      };
+
+      const userArr = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      userArr.push(booking);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(userArr));
+
+      const opArr = JSON.parse(localStorage.getItem(OPERATOR_KEY) || '[]');
+      opArr.push({ ...booking, user: 'Utente DEMO' });
+      localStorage.setItem(OPERATOR_KEY, JSON.stringify(opArr));
+
+      renderBookings();
+      form.reset();
+    });
+
+    document.addEventListener('DOMContentLoaded', renderBookings);
+  </script>
+</body>
+</html>

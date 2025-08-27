@@ -117,6 +117,7 @@
 </style>
 </head>
 <body>
+  
   <div class="demo-banner-top">
     ⚠️ Questa è una <strong>DEMO dimostrativa</strong> – Non vengono raccolti dati sensibili. Vogliamo farvi vedere e provare cosa sarà <strong>Cura‑MI</strong>.<br>
     <span class="highlight">Provalo subito! Clicca su <strong>Accedi</strong>.</span>
@@ -160,7 +161,7 @@
       const pass = document.getElementById('pass').value.trim();
       if(user==='123456' && pass==='123456'){
         localStorage.setItem('operatorName','Mario');
-        window.location.href='dashboardoperatore.html';
+        window.location.href='dashboardutente.html';
       } else {
         document.getElementById('errorMsg').style.display='block';
       }
