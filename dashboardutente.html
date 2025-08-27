@@ -14,16 +14,8 @@
       --celeste: #B2FFFF;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Arial, sans-serif;
-      background: var(--bg);
-      color: var(--slate);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    body { font-family: Arial, sans-serif; background: var(--bg); color: var(--slate); min-height: 100vh; display: flex; flex-direction: column; }
 
-    /* Navbar orizzontale */
     .navbar {
       background: var(--gold);
       color: var(--slate);
@@ -33,25 +25,11 @@
       gap: 24px;
       flex-wrap: wrap;
     }
-    .navbar img {
-      height: 40px;
-    }
-    .navbar .user-nav {
-      display: flex;
-      gap: 24px;
-      margin-left: auto;
-    }
-    .user-nav a {
-      color: var(--slate);
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 18px; /* testi leggermente maggiori */
-    }
-    .user-nav a:hover {
-      text-decoration: underline;
-    }
+    .navbar img { height: 40px; }
+    .navbar .user-nav { display: flex; gap: 24px; margin-left: auto; }
+    .user-nav a { color: var(--slate); text-decoration: none; font-weight: bold; font-size: 18px; }
+    .user-nav a:hover { text-decoration: underline; }
 
-    /* Banner DEMO color celeste */
     .demo-banner {
       background: var(--celeste);
       color: var(--slate);
@@ -61,49 +39,20 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
-    .main-container {
-      flex: 1;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-    }
-    .content {
-      max-width: 500px;
-      width: 100%;
-    }
+    .main-container { flex: 1; padding: 20px; display: flex; justify-content: center; }
+    .content { max-width: 500px; width: 100%; }
 
-    .demo-intro {
-      background: white;
-      padding: 16px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      text-align: center;
-      font-weight: bold;
-    }
-
-    .booking-form {
+    .demo-intro, .booking-form {
       background: white;
       padding: 20px;
       margin-bottom: 30px;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    .booking-form label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: bold;
-    }
-    .booking-form input,
-    .booking-form select,
-    .booking-form textarea {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 14px;
-    }
+    .demo-intro { font-weight: bold; text-align: center; }
+
+    .booking-form label { display: block; margin-bottom: 6px; font-weight: bold; }
+    .booking-form input, .booking-form select, .booking-form textarea { width: 100%; padding: 8px; margin-bottom: 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; }
     .booking-form textarea { resize: vertical; height: 80px; }
     .booking-form button {
       background: var(--gold);
@@ -114,28 +63,17 @@
       border-radius: 6px;
       cursor: pointer;
     }
-    .booking-form button:hover {
-      background: #e0ad3c;
-    }
+    .booking-form button:hover { background: #e0ad3c; }
 
-    .booking-widget {
-      display: grid;
-      gap: 16px;
-    }
+    .booking-widget { display: grid; gap: 16px; }
     .booking-card {
       background: white;
       padding: 16px;
       border-radius: 10px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    .booking-card h4 {
-      color: var(--teal);
-      margin-bottom: 10px;
-    }
-    .booking-card .detail {
-      margin-bottom: 6px;
-      font-size: 14px;
-    }
+    .booking-card h4 { color: var(--teal); margin-bottom: 10px; }
+    .booking-card .detail { margin-bottom: 6px; font-size: 14px; }
     .status {
       padding: 6px 10px;
       border-radius: 6px;
@@ -145,8 +83,8 @@
       margin-top: 8px;
     }
     .status.confirmed { background: #d4edda; color: #155724; }
-    .status.rejected { background: #f8d7da; color: #721c24; }
-    .status.inattesa { background: #fff3cd; color: #856404; }
+    .status.rejected  { background: #f8d7da; color: #721c24; }
+    .status.inattesa  { background: #fff3cd; color: #856404; }
 
     .reset-btn {
       background: var(--gold);
@@ -161,9 +99,7 @@
       max-width: 220px;
       width: 100%;
     }
-    .reset-btn:hover {
-      background: #e0ad3c;
-    }
+    .reset-btn:hover { background: #e0ad3c; }
 
     .contact-icons {
       position: fixed;
@@ -174,31 +110,18 @@
       gap: 12px;
       z-index: 2000;
     }
-    .icon-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      font-size: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .icon-btn.call { background: var(--teal); }
+    .icon-btn { width: 48px; height: 48px; border-radius: 50%; font-size: 22px; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: transform 0.2s; }
+    .icon-btn.call     { background: var(--teal); }
     .icon-btn.whatsapp { background: #25D366; }
     .icon-btn:hover { transform: scale(1.1); }
 
-    .footer {
-      margin-top: 40px;
-    }
+    .footer { margin-top: 40px; }
     .glass-footer {
-      background: rgba(255, 255, 255, 0.22);
+      background: rgba(255,255,255,0.22);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
-      border-top: 1px solid rgba(255, 255, 255, 0.45);
-      box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.06);
+      border-top: 1px solid rgba(255,255,255,0.45);
+      box-shadow: 0 -6px 18px rgba(0,0,0,0.06);
       padding: 20px 16px;
       font-size: 14px;
     }
@@ -211,31 +134,54 @@
       gap: 16px;
       text-align: center;
     }
-    .footer-left a,
-    .footer-right a {
+    .footer-left a, .footer-right a {
       text-decoration: none;
       color: var(--teal);
       font-weight: 600;
       transition: color 0.2s;
     }
-    .footer-left a:hover,
-    .footer-right a:hover {
-      color: #0f7e80;
-    }
+    .footer-left a:hover, .footer-right a:hover { color: #0f7e80; }
   </style>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "IL_TUO_API_KEY",
+      authDomain: "TUO_PROGETTO.firebaseapp.com",
+      databaseURL: "https://cura-mi-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "TUO_PROGETTO",
+      storageBucket: "TUO_PROGETTO.appspot.com",
+      messagingSenderId: "IL_TUO_SENDER_ID",
+      appId: "IL_TUO_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function logEvent(type, detail = {}) {
+      db.ref('logs').push({
+        page: location.pathname,
+        type,
+        detail,
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    logEvent('accessoPagina');
+  </script>
 </head>
 <body>
 
   <div class="navbar">
     <img src="images/logocurami.png" alt="Logo Cura‑MI">
     <div class="user-nav">
-      <a href="operatoreservizi.html">Opreatori/Servizi</a>
+      <a href="operatoreservizi.html">Operatori/Servizi</a>
       <a href="#">Profilo</a>
       <a href="utentepagamenti.html">Pagamenti</a>
       <a href="index.html">Esci</a>
     </div>
   </div>
-
 
   <div class="demo-banner">
     ⚠️ Questa è una <strong>DEMO dimostrativa</strong>. Non vengono raccolti dati sensibili.
@@ -296,22 +242,14 @@
     </div>
   </footer>
 
- 
   <script>
     const form = document.getElementById('bookingForm');
     const widget = document.getElementById('bookingWidget');
     const totalCountEl = document.getElementById('totalCount');
+
     const STORAGE_KEY = 'userBookings';
     const OPERATOR_KEY = 'pendingBookings';
-    const bc = new BroadcastChannel('adminLogsChannel');
-  
-    function logAdminEvent(type, detail = {}) {
-      const logs = JSON.parse(localStorage.getItem('adminLogs') || '[]');
-      logs.push({ type, timestamp: new Date().toISOString(), detail });
-      localStorage.setItem('adminLogs', JSON.stringify(logs));
-      bc.postMessage('update');
-    }
-  
+
     function renderBookings() {
       const list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
       widget.innerHTML = '';
@@ -330,7 +268,7 @@
         widget.appendChild(card);
       });
     }
-  
+
     form.addEventListener('submit', e => {
       e.preventDefault();
       const booking = {
@@ -342,17 +280,16 @@
         paymentMethod: document.getElementById('payment').value,
         status: 'In attesa'
       };
-  
+
       const userArr = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
       userArr.push(booking);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(userArr));
-  
+
       const opArr = JSON.parse(localStorage.getItem(OPERATOR_KEY) || '[]');
       opArr.push({ ...booking, user: 'Utente DEMO' });
       localStorage.setItem(OPERATOR_KEY, JSON.stringify(opArr));
-  
-      // 🔴 LOG CLICK su prenota
-      logAdminEvent('clickPrenota', {
+
+      logEvent('clickPrenota', {
         user: 'Utente DEMO',
         servizio: booking.service,
         data: booking.date,
@@ -360,13 +297,13 @@
         modalità: booking.mode,
         pagamento: booking.paymentMethod
       });
-  
+
       renderBookings();
       form.reset();
     });
-  
+
     document.addEventListener('DOMContentLoaded', renderBookings);
-  
+
     function resetDemoUtente() {
       if (confirm("Sei sicuro di resettare la demo utente?")) {
         localStorage.removeItem('userBookings');
@@ -374,7 +311,6 @@
       }
     }
   </script>
-  
-  
+
 </body>
 </html>

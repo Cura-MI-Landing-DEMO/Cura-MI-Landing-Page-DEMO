@@ -73,6 +73,23 @@
       width: 200px;
     }
   </style>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "", // Puoi lasciarlo vuoto se non usi auth
+    authDomain: "",
+    databaseURL: "https://cura-mi-default-rtdb.europe-west1.firebasedatabase.app/",
+    projectId: "cura-mi",
+    storageBucket: "",
+    messagingSenderId: "",
+    appId: ""
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+</script>
 </head>
 <body>
 

@@ -42,6 +42,33 @@
 
     .contact-icons { right: 10px; }
   </style>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+  const firebaseConfig = {
+    apiKey: "IL_TUO_API_KEY",
+    authDomain: "TUO_PROGETTO.firebaseapp.com",
+    databaseURL: "https://cura-mi-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "TUO_PROGETTO",
+    storageBucket: "TUO_PROGETTO.appspot.com",
+    messagingSenderId: "IL_TUO_SENDER_ID",
+    appId: "IL_TUO_APP_ID"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  function logEvent(type, detail = {}) {
+    db.ref('logs').push({
+      page: location.pathname,
+      type,
+      detail,
+      timestamp: new Date().toISOString()
+    });
+  }
+
+  logEvent('accessoPagina');
+</script>
 </head>
 <body>
   <div class="demo-banner" role="status">
@@ -134,11 +161,23 @@
 
     // Funzione per loggare eventi nella dashboard admin
     function logAdminEvent(type, detail = {}) {
-      const logs = JSON.parse(localStorage.getItem('adminLogs') || '[]');
-      logs.push({ type, timestamp: new Date().toISOString(), detail });
-      localStorage.setItem('adminLogs', JSON.stringify(logs));
-      bc.postMessage('update');
-    }
+  const logs = JSON.parse(localStorage.getItem('adminLogs') || '[]');
+  const entry = { type, timestamp: new Date().toISOString(), detail };
+  logs.push(entry);
+  localStorage.setItem('adminLogs', JSON.stringify(logs));
+  bc.postMessage('update');
+
+  // ✅ Log anche su Firebase
+  if (typeof firebase !== 'undefined') {
+    firebase.database().ref('logs').push({
+      page: location.pathname,
+      type,
+      detail,
+      timestamp: new Date().toISOString()
+    });
+  }
+}
+
 
     new Chart(document.getElementById('availabilityChart'), {
       type: 'bar',
