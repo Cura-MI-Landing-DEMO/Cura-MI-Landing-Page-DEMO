@@ -296,15 +296,22 @@
     </div>
   </footer>
 
+ 
   <script>
-
-    
     const form = document.getElementById('bookingForm');
     const widget = document.getElementById('bookingWidget');
     const totalCountEl = document.getElementById('totalCount');
     const STORAGE_KEY = 'userBookings';
     const OPERATOR_KEY = 'pendingBookings';
-
+    const bc = new BroadcastChannel('adminLogsChannel');
+  
+    function logAdminEvent(type, detail = {}) {
+      const logs = JSON.parse(localStorage.getItem('adminLogs') || '[]');
+      logs.push({ type, timestamp: new Date().toISOString(), detail });
+      localStorage.setItem('adminLogs', JSON.stringify(logs));
+      bc.postMessage('update');
+    }
+  
     function renderBookings() {
       const list = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
       widget.innerHTML = '';
@@ -323,7 +330,7 @@
         widget.appendChild(card);
       });
     }
-
+  
     form.addEventListener('submit', e => {
       e.preventDefault();
       const booking = {
@@ -335,20 +342,31 @@
         paymentMethod: document.getElementById('payment').value,
         status: 'In attesa'
       };
+  
       const userArr = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
       userArr.push(booking);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(userArr));
-
+  
       const opArr = JSON.parse(localStorage.getItem(OPERATOR_KEY) || '[]');
       opArr.push({ ...booking, user: 'Utente DEMO' });
       localStorage.setItem(OPERATOR_KEY, JSON.stringify(opArr));
-
+  
+      // 🔴 LOG CLICK su prenota
+      logAdminEvent('clickPrenota', {
+        user: 'Utente DEMO',
+        servizio: booking.service,
+        data: booking.date,
+        ora: booking.time,
+        modalità: booking.mode,
+        pagamento: booking.paymentMethod
+      });
+  
       renderBookings();
       form.reset();
     });
-
+  
     document.addEventListener('DOMContentLoaded', renderBookings);
-
+  
     function resetDemoUtente() {
       if (confirm("Sei sicuro di resettare la demo utente?")) {
         localStorage.removeItem('userBookings');
@@ -356,5 +374,7 @@
       }
     }
   </script>
+  
+  
 </body>
 </html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard – Cura‑MI</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --gold: #FDC043;
+      --teal: #139395;
+      --bg-dark: #1a1a2e;
+      --text-light: #f0f0f5;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: Arial, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-light);
+    }
+    header {
+      display: flex; align-items: center;
+      background: var(--gold);
+      padding: 12px 24px;
+    }
+    header img { height: 40px; margin-right: 16px; }
+    header h2 { margin: 0; color: var(--bg-dark); }
+    .controls {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px;
+    }
+    .controls .btn {
+      background: var(--teal); color: white; border: none;
+      padding: 10px 16px; border-radius: 6px; cursor: pointer;
+      font-weight: bold;
+    }
+    .controls .btn:hover { opacity: 0.9; }
+    .metrics {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+      gap: 16px; padding: 0 16px;
+    }
+    .metric-card {
+      background: #16213e; padding: 20px; border-radius: 10px;
+      text-align: center; border-left: 4px solid var(--teal);
+      transition: transform .2s, border-color .2s;
+    }
+    .metric-card:hover {
+      transform: translateY(-4px); border-color: var(--gold);
+    }
+    .metric-card h3 { margin: 0; font-size: 1.1rem; color: var(--gold); }
+    .metric-card p { font-size: 2rem; margin: 8px 0 0; }
+
+    .chart-container { max-width: 900px; margin: 32px auto; }
+    canvas { background: #0f3460; border-radius: 10px; }
+
+    .log-table {
+      width: 100%; max-width: 900px; margin: 32px auto;
+      border-collapse: collapse;
+    }
+    .log-table th, .log-table td {
+      padding: 10px; border: 1px solid #394867; text-align: left; font-size: 14px;
+    }
+    .log-table th {
+      background: var(--teal); color: var(--text-light);
+    }
+
+    .search-bar {
+      max-width: 900px; margin: 0 auto 16px;
+      text-align: right;
+    }
+    .search-bar input {
+      padding: 8px; border-radius: 6px; border: none;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <img src="images/logocurami.png" alt="Logo Cura‑MI">
+    <h2>Admin Dashboard</h2>
+  </header>
+
+  <div class="controls">
+    <button class="btn" onclick="clearLogs()">Cancella Tutti i Log</button>
+    <div class="search-bar">
+      <input id="logSearch" placeholder="Cerca nei log...">
+    </div>
+  </div>
+
+  <div class="metrics">
+    <div class="metric-card">
+      <h3>Utenti collegati</h3><p id="metricUsers">0</p>
+    </div>
+    <div class="metric-card">
+      <h3>Operatori collegati</h3><p id="metricOps">0</p>
+    </div>
+    <div class="metric-card">
+      <h3>Prenotazioni</h3><p id="metricBookings">0</p>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="overviewChart" height="120"></canvas>
+  </div>
+
+  <table class="log-table">
+    <thead><tr><th>Evento</th><th>Dettagli</th><th>Data / Ora</th></tr></thead>
+    <tbody id="logBody"></tbody>
+  </table>
+
+  <script>
+    const ADMIN_LOG_KEY = 'adminLogs';
+    const bc = new BroadcastChannel('adminLogsChannel');
+
+    function getLogs() {
+      return JSON.parse(localStorage.getItem(ADMIN_LOG_KEY) || '[]');
+    }
+
+    function renderLogs(filter = '') {
+      const logs = getLogs().filter(l =>
+        JSON.stringify(l).toLowerCase().includes(filter)
+      );
+      const tbody = document.getElementById('logBody');
+      tbody.innerHTML = '';
+      logs.forEach(l => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${l.type}</td>
+          <td>${Object.entries(l.detail || {}).map(([k,v])=>`${k}: ${v}`).join(', ')}</td>
+          <td>${new Date(l.timestamp).toLocaleString()}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function updateMetrics() {
+      const logs = getLogs();
+      const users = logs.filter(l => l.type === 'login' && l.detail.userType === 'utente').length;
+      const ops = logs.filter(l => l.type === 'login' && l.detail.userType === 'operatore').length;
+      const book = logs.filter(l => l.type === 'clickPrenota').length;
+      document.getElementById('metricUsers').textContent = users;
+      document.getElementById('metricOps').textContent = ops;
+      document.getElementById('metricBookings').textContent = book;
+      return { users, ops, book };
+    }
+
+    let chart;
+    function renderChart() {
+      const ctx = document.getElementById('overviewChart').getContext('2d');
+      const m = updateMetrics();
+      const data = {
+        labels: ['Utenti', 'Operatori', 'Prenotazioni'],
+        datasets: [{
+          backgroundColor: [getComputedStyle(document.documentElement).getPropertyValue('--teal').trim(),
+                            getComputedStyle(document.documentElement).getPropertyValue('--gold').trim(),
+                            '#f0f0f5'],
+          data: [m.users, m.ops, m.book]
+        }]
+      };
+      const options = { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } };
+      if (chart) { chart.data = data; chart.update(); }
+      else { chart = new Chart(ctx, { type: 'bar', data, options }); }
+    }
+
+    function clearLogs() {
+      if (confirm('Cancella tutti i log?')) {
+        localStorage.removeItem(ADMIN_LOG_KEY);
+        refresh();
+      }
+    }
+
+    function refresh() {
+      renderLogs(document.getElementById('logSearch').value.toLowerCase());
+      renderChart();
+    }
+
+    bc.onmessage = () => refresh();
+
+    document.getElementById('logSearch').addEventListener('input', () => refresh());
+    document.addEventListener('DOMContentLoaded', () => {
+      refresh();
+    });
+  </script>
+
+
+</body>
+</html>

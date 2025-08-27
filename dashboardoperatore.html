@@ -94,155 +94,184 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
-  
+  <!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard Operatore – Cura‑MI</title>
+  <style>
+    /* Stili di base omessi per brevità; mantieni quelli originali della tua pagina */
+  </style>
+</head>
+<body>
+  <!-- Qui va il tuo header, sidebar, banner demo, ecc. -->
+
+  <main class="main-dashboard">
+    <h1>Benvenuto, Operatore</h1>
+    <button class="reset-btn" onclick="resetPrenotazioni()">🔄 Reset prenotazioni demo</button>
+
+    <div class="cards-row">
+      <div class="card"><h3>Prossima prenotazione</h3><p id="nextBooking">—</p></div>
+      <div class="card"><h3>Totale prenotazioni</h3><p id="totalBookings">0</p></div>
+      <div class="card"><h3>Utenti attivi</h3><p id="activeUsers">0</p></div>
+    </div>
+
+    <section class="pending-widget" id="pendingWidget"></section>
+
+    <section class="chart-section">
+      <h2>Statistiche orari disponibili</h2>
+      <canvas id="availabilityChart"></canvas>
+    </section>
+  </main>
+
+  <!-- Contatto e footer -->
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-  new Chart(document.getElementById('availabilityChart'), {
-    type: 'bar',
-    data: {
-      labels: ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'],
-      datasets: [{ data: [5,6,4,5,7,3,2], backgroundColor:'#FDC043' }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true } }
+    // Inizializza il canale di comunicazione per notifiche real-time
+    const bc = new BroadcastChannel('adminLogsChannel');
+
+    // Funzione per loggare eventi nella dashboard admin
+    function logAdminEvent(type, detail = {}) {
+      const logs = JSON.parse(localStorage.getItem('adminLogs') || '[]');
+      logs.push({ type, timestamp: new Date().toISOString(), detail });
+      localStorage.setItem('adminLogs', JSON.stringify(logs));
+      bc.postMessage('update');
     }
-  });
-  
-  (function() {
-    const widget = document.getElementById('pendingWidget'),
-          KEY_PENDING = 'pendingBookings',
-          KEY_HANDLED = 'handledBookings',
-          KEY_PAY = 'payments',
-          USER_KEY = 'userBookings';
-    const elNext = document.getElementById('nextBooking'),
-          elTotal = document.getElementById('totalBookings'),
-          elActive = document.getElementById('activeUsers');
-  
-    function loadDefaults() {
-      if (!localStorage.getItem(KEY_PENDING)) {
-        const defaults = [];
-        localStorage.setItem(KEY_PENDING, JSON.stringify(defaults));
+
+    new Chart(document.getElementById('availabilityChart'), {
+      type: 'bar',
+      data: {
+        labels: ['Lun','Mar','Mer','Gio','Ven','Sab','Dom'],
+        datasets: [{ data: [5,6,4,5,7,3,2], backgroundColor: '#FDC043' }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
       }
-    }
-  
-    function renderCards() {
-      const list = JSON.parse(localStorage.getItem(KEY_PENDING) || '[]');
-      widget.innerHTML = '';
-      list.forEach((b, i) => {
-        const c = document.createElement('div');
-        c.className = 'pending-card';
-        c.innerHTML = `
-          <h4>${b.date}</h4>
-          <div class="card-detail">Servizio: ${b.service}</div>
-          <div class="card-detail">Utente: ${b.user}</div>
-          <div class="card-detail">Orario: ${b.time}</div>
-          <div class="card-detail">Modalità: ${b.mode === 'domicilio' ? 'A domicilio' : 'In studio'}</div>
-          <div class="card-detail">Note: ${b.notes || '–'}</div>
-          <div class="card-detail">Pagamento: ${b.paymentMethod || 'Non indicato'}</div>
-          <div class="card-actions">
-            <button class="btn-op accept-btn" data-i="${i}">✔</button>
-            <button class="btn-op reject-btn" data-i="${i}">✖</button>
-          </div>`;
-        widget.appendChild(c);
-      });
-      updateStats();
-    }
-  
-    function updateStats() {
-      const pending = JSON.parse(localStorage.getItem(KEY_PENDING) || '[]'),
-            handled = JSON.parse(localStorage.getItem(KEY_HANDLED) || '[]');
-      elTotal.textContent = pending.length + handled.length;
-      elActive.textContent = handled.length;
-      elNext.textContent = pending[0]?.date || '—';
-    }
-  
-    widget.onclick = e => {
-      if (!e.target.matches('.btn-op')) return;
-      const idx = e.target.dataset.i;
-      const list = JSON.parse(localStorage.getItem(KEY_PENDING) || '[]');
-      const b = list.splice(idx, 1)[0];
-      b.status = e.target.classList.contains('accept-btn') ? 'Confermato' : 'Rifiutata';
-      localStorage.setItem(KEY_PENDING, JSON.stringify(list));
-  
-      const handled = JSON.parse(localStorage.getItem(KEY_HANDLED) || '[]');
-      handled.push(b);
-      localStorage.setItem(KEY_HANDLED, JSON.stringify(handled));
-  
-      const userArr = JSON.parse(localStorage.getItem(USER_KEY) || '[]');
-      const idxUser = userArr.findIndex(ub =>
-        ub.date === b.date &&
-        ub.service === b.service &&
-        ub.time === b.time &&
-        ub.paymentMethod === b.paymentMethod
-      );
-      if (idxUser > -1) {
-        userArr[idxUser].status = b.status;
-        localStorage.setItem(USER_KEY, JSON.stringify(userArr));
+    });
+
+    (function() {
+      const widget = document.getElementById('pendingWidget'),
+            KEY_PENDING = 'pendingBookings',
+            KEY_HANDLED = 'handledBookings',
+            KEY_PAY = 'payments',
+            USER_KEY = 'userBookings';
+
+      const elNext = document.getElementById('nextBooking'),
+            elTotal = document.getElementById('totalBookings'),
+            elActive = document.getElementById('activeUsers');
+
+      function loadDefaults() {
+        if (!localStorage.getItem(KEY_PENDING)) {
+          localStorage.setItem(KEY_PENDING, JSON.stringify([]));
+        }
       }
-  
-      const pays = JSON.parse(localStorage.getItem(KEY_PAY) || '[]');
-      pays.push({
-        date: b.date,
-        time: b.time,
-        user: b.user,
-        service: b.service,
-        method: b.paymentMethod || 'Non specificato',
-        amount: '€20',
-        status: b.status
+
+      function renderCards() {
+        const list = JSON.parse(localStorage.getItem(KEY_PENDING) || '[]');
+        widget.innerHTML = '';
+        list.forEach((b, i) => {
+          const c = document.createElement('div');
+          c.className = 'pending-card';
+          c.innerHTML = `
+            <h4>${b.date}</h4>
+            <div class="card-detail">Servizio: ${b.service}</div>
+            <div class="card-detail">Utente: ${b.user}</div>
+            <div class="card-detail">Orario: ${b.time}</div>
+            <div class="card-detail">Modalità: ${b.mode === 'domicilio' ? 'A domicilio' : 'In studio'}</div>
+            <div class="card-detail">Note: ${b.notes || '–'}</div>
+            <div class="card-detail">Pagamento: ${b.paymentMethod || 'Non indicato'}</div>
+            <div class="card-actions">
+              <button class="btn-op accept-btn" data-i="${i}">✔</button>
+              <button class="btn-op reject-btn" data-i="${i}">✖</button>
+            </div>`;
+          widget.appendChild(c);
+        });
+        updateStats();
+      }
+
+      function updateStats() {
+        const pending = JSON.parse(localStorage.getItem(KEY_PENDING) || '[]'),
+              handled = JSON.parse(localStorage.getItem(KEY_HANDLED) || '[]');
+        elTotal.textContent = pending.length + handled.length;
+        elActive.textContent = handled.length;
+        elNext.textContent = pending[0]?.date || '—';
+      }
+
+      widget.addEventListener('click', e => {
+        if (!e.target.matches('.btn-op')) return;
+        const idx = e.target.dataset.i;
+        const list = JSON.parse(localStorage.getItem(KEY_PENDING) || '[]');
+        const b = list.splice(idx, 1)[0];
+        const accepted = e.target.classList.contains('accept-btn');
+        b.status = accepted ? 'Confermato' : 'Rifiutata';
+
+        localStorage.setItem(KEY_PENDING, JSON.stringify(list));
+
+        const handled = JSON.parse(localStorage.getItem(KEY_HANDLED) || '[]');
+        handled.push(b);
+        localStorage.setItem(KEY_HANDLED, JSON.stringify(handled));
+
+        const userArr = JSON.parse(localStorage.getItem(USER_KEY) || '[]');
+        const idxUser = userArr.findIndex(ub =>
+          ub.date === b.date &&
+          ub.service === b.service &&
+          ub.time === b.time
+        );
+        if (idxUser > -1) {
+          userArr[idxUser].status = b.status;
+          localStorage.setItem(USER_KEY, JSON.stringify(userArr));
+        }
+
+        const pays = JSON.parse(localStorage.getItem(KEY_PAY) || '[]');
+        pays.push({
+          date: b.date,
+          time: b.time,
+          user: b.user,
+          service: b.service,
+          method: b.paymentMethod || 'Non specificato',
+          amount: '€20',
+          status: b.status
+        });
+        localStorage.setItem(KEY_PAY, JSON.stringify(pays));
+
+        // ** Log Ottimizzato per conferma prenotazione **
+        if (accepted) {
+          logAdminEvent('confermaPrenotazione', {
+            user: b.user,
+            service: b.service,
+            date: b.date,
+            time: b.time,
+            payment: b.paymentMethod || 'Non specificato'
+          });
+        }
+
+        renderCards();
       });
-      localStorage.setItem(KEY_PAY, JSON.stringify(pays));
-  
+
+      window.resetPrenotazioni = () => {
+        if (confirm("Resettare dati demo?")) {
+          localStorage.removeItem(KEY_PENDING);
+          localStorage.removeItem(KEY_HANDLED);
+          localStorage.removeItem(KEY_PAY);
+          localStorage.removeItem(USER_KEY);
+          location.reload();
+        }
+      };
+
+      document.getElementById('demoClose').onclick = () => {
+        document.querySelector('.demo-banner').style.display = 'none';
+      };
+
+      loadDefaults();
       renderCards();
-    };
-  
-    window.resetPrenotazioni = () => {
-      if (confirm("Resettare dati demo?")) {
-        localStorage.removeItem(KEY_PENDING);
-        localStorage.removeItem(KEY_HANDLED);
-        localStorage.removeItem(KEY_PAY);
-        localStorage.removeItem(USER_KEY);
-        location.reload();
-      }
-    };
-  
-    document.getElementById('demoClose').onclick = () => {
-      document.querySelector('.demo-banner').style.display = 'none';
-    };
-  
-    loadDefaults();
-    renderCards();
-  })();
-
-  
-  const operators = [
-    { name: 'Infermiere', role: 'infermiere', bio: 'Assistenza sanitaria a domicilio.', avail: true, next: '2025‑09‑01', img: 'https://via.placeholder.com/100' },
-    { name: 'Accompagnatore Visite', role: 'accompagnatore visite', bio: 'Accompagna alle visite mediche.', avail: false, next: '2025‑09‑05', img: 'https://via.placeholder.com/100' },
-    // altre due...
-  ];
-
-  document.getElementById('cardGrid').addEventListener('click', e => {
-    const idx = e.target.dataset.i;
-    if (!idx || !e.target.classList.contains('book')) return;
-    const op = operators[idx];
-    const booking = {
-      operator: op.name,
-      date: '', time: '', mode: '', notes: '', paymentMethod: '', status: 'In attesa'
-    };
-
-    // lato utente
-    const userArr = JSON.parse(localStorage.getItem('userBookings') || '[]');
-    userArr.push(booking);
-    localStorage.setItem('userBookings', JSON.stringify(userArr));
-
-    // lato operatore
-    const opArr = JSON.parse(localStorage.getItem('pendingBookings') || '[]');
-    opArr.push({ ...booking, user: 'Utente DEMO' });
-    localStorage.setItem('pendingBookings', JSON.stringify(opArr));
-
-    window.location = 'dashboardoperatore.html';
-  });
-</script>
+    })();
+  </script>
+</body>
+</html>
 
   
 </script>

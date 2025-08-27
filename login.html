@@ -155,19 +155,38 @@
   </div>
 
   <script>
+    const ADMIN_LOG_KEY = 'adminLogs';
+    const bc = new BroadcastChannel('adminLogsChannel');
+  
+    function logAdminEvent(type, detail = {}) {
+      const logs = JSON.parse(localStorage.getItem(ADMIN_LOG_KEY) || '[]');
+      logs.push({ type, timestamp: new Date().toISOString(), detail });
+      localStorage.setItem(ADMIN_LOG_KEY, JSON.stringify(logs));
+      bc.postMessage('update');
+    }
+  
     function login(){
       const user = document.getElementById('user').value.trim();
       const pass = document.getElementById('pass').value.trim();
-      if(user==='123456' && pass==='123456'){
+      if(user === '123456' && pass === '123456'){
         localStorage.setItem('operatorName','Mario');
-        window.location.href='dashboardoperatore.html';
+  
+        // Log del login come operatore
+        logAdminEvent('login', {
+          userType: 'operatore',
+          user: 'OPERATORE'
+        });
+  
+        window.location.href = 'dashboardoperatore.html';
       } else {
-        document.getElementById('errorMsg').style.display='block';
+        document.getElementById('errorMsg').style.display = 'block';
       }
     }
-    window.addEventListener('DOMContentLoaded', ()=>{
-      setTimeout(()=>document.getElementById('demoPopup').classList.add('active'), 500);
+  
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => document.getElementById('demoPopup')?.classList.add('active'), 500);
     });
   </script>
+  
 </body>
 </html>
