@@ -213,6 +213,37 @@
     loadDefaults();
     renderCards();
   })();
+
+  
+  const operators = [
+    { name: 'Infermiere', role: 'infermiere', bio: 'Assistenza sanitaria a domicilio.', avail: true, next: '2025‑09‑01', img: 'https://via.placeholder.com/100' },
+    { name: 'Accompagnatore Visite', role: 'accompagnatore visite', bio: 'Accompagna alle visite mediche.', avail: false, next: '2025‑09‑05', img: 'https://via.placeholder.com/100' },
+    // altre due...
+  ];
+
+  document.getElementById('cardGrid').addEventListener('click', e => {
+    const idx = e.target.dataset.i;
+    if (!idx || !e.target.classList.contains('book')) return;
+    const op = operators[idx];
+    const booking = {
+      operator: op.name,
+      date: '', time: '', mode: '', notes: '', paymentMethod: '', status: 'In attesa'
+    };
+
+    // lato utente
+    const userArr = JSON.parse(localStorage.getItem('userBookings') || '[]');
+    userArr.push(booking);
+    localStorage.setItem('userBookings', JSON.stringify(userArr));
+
+    // lato operatore
+    const opArr = JSON.parse(localStorage.getItem('pendingBookings') || '[]');
+    opArr.push({ ...booking, user: 'Utente DEMO' });
+    localStorage.setItem('pendingBookings', JSON.stringify(opArr));
+
+    window.location = 'dashboardoperatore.html';
+  });
+</script>
+
   
 </script>
   

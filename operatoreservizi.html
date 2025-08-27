@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard Utente – Prenota Operatore</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <style>
+    :root {
+      --teal: #139395;
+      --gold: #FDC043;
+      --slate: #394e65;
+      --bg: #f4f6f8;
+      --celeste: #B2FFFF;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--slate);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--gold);
+      padding: 14px 20px;
+    }
+    .navbar .logo {
+      height: 45px;
+      flex-shrink: 0;
+    }
+    .user-nav {
+      display: flex;
+      gap: 20px;
+    }
+    .user-nav a {
+      color: var(--slate);
+      font-weight: bold;
+      font-size: 18px;
+      text-decoration: none;
+    }
+    .user-nav a:hover { text-decoration: underline; }
+
+    /* Mobile-specific: link sotto il logo */
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        text-align: center;
+      }
+      .user-nav {
+        margin-top: 10px;
+      }
+    }
+
+    .demo-banner {
+      background: var(--celeste);
+      color: var(--slate);
+      text-align: center;
+      padding: 14px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .main-container {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .search-bar {
+      margin-bottom: 20px;
+      width: 100%; max-width: 500px;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      width: 100%;
+      max-width: 1000px;
+    }
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .card.available:hover { transform: scale(1.03); cursor: pointer; }
+    .card.unavailable { opacity: 0.6; }
+    .card img {
+      width: 100px; height: 100px;
+      border-radius: 50%; object-fit: cover;
+      margin-bottom: 12px;
+    }
+    .card h4 {
+      color: var(--teal);
+      font-size: 1.2rem;
+      margin-bottom: 6px;
+    }
+    .status {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      color: white;
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+    }
+    .status.available { background: green; }
+    .status.unavailable { background: red; }
+    .bio {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      margin-bottom: 6px;
+    }
+    .card small {
+      color: var(--slate);
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .btn-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .btn.info { background: var(--teal); color: white; }
+    .btn.book { background: var(--gold); color: var(--slate); }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal.active { display: flex; }
+    .modal-content {
+      background: white;
+      padding: 24px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 380px;
+      text-align: center;
+      position: relative;
+    }
+    .modal-content h3 {
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .modal-content p {
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+    .modal-content .btn.confirm {
+      background: var(--gold);
+      color: var(--slate);
+      padding: 8px 14px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+    .close-modal {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--slate);
+    }
+    .contact-icons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 2000;
+    }
+    .icon-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .icon-btn.call { background: var(--teal); }
+    .icon-btn.whatsapp { background: #25D366; }
+    .icon-btn:hover { transform: scale(1.1); }
+
+    .footer {
+      margin-top: 40px;
+    }
+    .glass-footer {
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(18px);
+      padding: 20px 16px;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <img src="images/logocurami.png" alt="Logo Cura‑MI" class="logo">
+    <div class="user-nav">
+      <a href="dashboardutente.html">DEMO - PRENOTA DUBITO!</a>
+      <a href="pagamentiutenti.html">Pagamenti</a>
+      <a href="#">Profilo</a>
+      <a href="index.html">Esci</a>
+    </div>
+  </nav>
+
+  <div class="demo-banner">Seleziona un operatore per la prenotazione</div>
+
+  <div class="main-container">
+    <div class="search-bar">
+      <input id="searchInput" type="text" placeholder="Digita per filtrare: infermiere, oss...">
+    </div>
+    <div class="grid" id="cardGrid"></div>
+  </div>
+
+  <div class="modal" id="infoModal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <h3 id="modalName"></h3>
+      <p id="modalBio"></p>
+      <p><strong>Disponibilità attuale:</strong> <span id="modalAvail"></span></p>
+      <p><strong>Prossima disponibilità:</strong> <span id="modalNext"></span></p>
+      <button class="btn confirm" id="modalConfirm">Ho capito</button>
+    </div>
+  </div>
+
+  <div class="contact-icons">
+    <a href="tel:+393331234567" class="icon-btn call"><i class="fa-solid fa-phone"></i></a>
+    <a href="https://wa.me/393331234567" target="_blank" class="icon-btn whatsapp"><i class="fa-brands fa-whatsapp"></i></a>
+  </div>
+
+  <footer class="footer glass-footer">© 2025 Cura‑MI – Demo interattiva</footer>
+
+  <script>
+    const operators = [
+      { name: 'Infermiere A', role: 'infermiere', bio: 'Assistenza sanitaria a domicilio.', avail: true, next: '2025‑09‑01', img: 'https://via.placeholder.com/100' },
+      { name: 'Infermiere B', role: 'infermiere', bio: 'Supporto post‑operatorio.', avail: false, next: '2025‑09‑10', img: 'https://via.placeholder.com/100' },
+      { name: 'OSS A', role: 'oss', bio: 'Aiuto nella mobilizzazione e igiene.', avail: true, next: '2025‑09‑03', img: 'https://via.placeholder.com/100' },
+      { name: 'OSS B', role: 'oss', bio: 'Supporto nelle attività quotidiane.', avail: true, next: '2025‑09‑04', img: 'https://via.placeholder.com/100' },
+      { name: 'Fisioterapista', role: 'fisioterapista', bio: 'Riabilitazione motoria a domicilio.', avail: true, next: '2025‑09‑02', img: 'https://via.placeholder.com/100' },
+      { name: 'Accompagnatore Visite', role: 'accompagnatore visite', bio: 'Accompagna alle visite mediche.', avail: false, next: '2025‑09‑05', img: 'https://via.placeholder.com/100' },
+    ];
+
+    const cardGrid = document.getElementById('cardGrid');
+    const searchInput = document.getElementById('searchInput');
+    const modal = document.getElementById('infoModal');
+    const nameEl = document.getElementById('modalName');
+    const bioEl = document.getElementById('modalBio');
+    const availEl = document.getElementById('modalAvail');
+    const nextEl = document.getElementById('modalNext');
+    const confirmBtn = document.getElementById('modalConfirm');
+    const closeBtn = document.getElementById('closeModal');
+
+    function renderCards(filter = '') {
+      cardGrid.innerHTML = '';
+      operators
+        .filter(op => op.name.toLowerCase().includes(filter) || op.role.includes(filter))
+        .forEach((op, idx) => {
+          const card = document.createElement('div');
+          card.className = `card ${op.avail ? 'available' : 'unavailable'}`;
+          card.innerHTML = `
+            <img src="${op.img}" alt="${op.name}">
+            <h4>${op.name}</h4>
+            <span class="status ${op.avail ? 'available' : 'unavailable'}">${op.avail ? 'Disponibile' : 'Non disponibile'}</span>
+            <p class="bio">${op.bio}</p>
+            <small>Prossima disponibilità: ${op.next}</small>
+            <div class="btn-row">
+              <button class="btn info" data-i="${idx}">Info</button>
+              <button class="btn book" data-i="${idx}" ${op.avail ? '' : 'disabled'}>Prenota</button>
+            </div>`;
+          cardGrid.appendChild(card);
+        });
+    }
+
+    searchInput.addEventListener('input', () => renderCards(searchInput.value.trim().toLowerCase()));
+    renderCards();
+
+    cardGrid.addEventListener('click', e => {
+      const idx = e.target.dataset.i;
+      if (typeof idx === 'undefined') return;
+      const op = operators[idx];
+      nameEl.textContent = op.name;
+      bioEl.textContent = op.bio;
+      availEl.textContent = op.avail ? 'Disponibile ora' : 'Non disponibile';
+      nextEl.textContent = op.next;
+      modal.classList.add('active');
+      confirmBtn.onclick = () => {
+        modal.classList.remove('active');
+        if (e.target.classList.contains('book') && op.avail) {
+          localStorage.setItem('preselectedService', op.name);
+          alert('Ricordati di indicare',
+       ' Grazie – Cura‑MI');
+          window.location.href = 'dashboardutente.html';
+        }
+      };
+    });
+
+    closeBtn.onclick = () => modal.classList.remove('active');
+    modal.onclick = e => { if (e.target === modal) modal.classList.remove('active'); };
+  </script>
+</body>
+</html>
